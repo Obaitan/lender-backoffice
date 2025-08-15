@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="540"
+   height="540"
+   enable-background="new 312.809 0 401 401"
+   version="1.1"
+   viewBox="312.809 0 540 540"
+   id="svg177"
+   sodipodi:docname="blank-profile-picture-973460.svg"
+   inkscape:version="1.2.2 (b0a8486, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs181" />
+  <sodipodi:namedview
+     id="namedview179"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="0.58852868"
+     inkscape:cx="497.00212"
+     inkscape:cy="364.46822"
+     inkscape:window-width="1680"
+     inkscape:window-height="935"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg177" />
+  <g
+     id="g1167"
+     transform="translate(15.759551,-5.759624)">
+    <circle
+       style="opacity:1;fill:none;stroke:#d9eee9;stroke-width:7.45469;stroke-dasharray:none;stroke-opacity:1"
+       id="path400"
+       cx="567.04944"
+       cy="275.75961"
+       r="266.27264" />
+    <g
+       id="g346"
+       transform="translate(53.220353,48.512645)"
+       style="fill:#d9eee9;fill-opacity:1">
+      <path
+         d="m 513.81074,267.14184 c -103.36184,0 -187.75496,58.93026 -192.47574,132.84226 H 706.32317 C 701.59016,326.06598 617.16647,267.14184 513.81074,267.14184 Z"
+         fill="#aeb4b7"
+         id="path171"
+         style="fill:#d9eee9;fill-opacity:1;stroke-width:1.223" />
+      <path
+         d="m 610.41551,158.02578 c 0,57.17036 -42.93464,103.51594 -95.89543,103.51594 -52.96079,0 -95.89543,-46.34558 -95.89543,-103.51594 0,-57.17036 42.93464,-103.515943 95.89543,-103.515943 52.96813,0 95.89543,46.351703 95.89543,103.514723 z"
+         fill="#aeb4b7"
+         id="path173"
+         style="fill:#d9eee9;fill-opacity:1;stroke-width:1.223" />
+    </g>
+  </g>
+</svg>
