@@ -1,6 +1,6 @@
 # Lender - Loan Management System
 
-A comprehensive loan management and financial services platform built with Next.js, designed to streamline lending operations for financial institutions.
+A comprehensive APIs-driven loan management and financial services platform built with Next.js, designed to streamline lending operations for financial institutions.
 
 ## 🚀 Features
 
