@@ -18,7 +18,7 @@ const Wacs = ({
   mandates: WacsMandate[] | null;
   repayments: WacsRepayment[] | null;
 }) => {
-  const inFlightTabs = [
+  const wacsTabs = [
     {
       label: 'Mandates',
       content: <WacsMandateTable record={mandates || []} />,
@@ -46,13 +46,13 @@ const Wacs = ({
               </Tooltip>
             </div>
             <div className="space-y-1">
-              <p className="text-[13px] text-gray-300">IPPIS No.</p>
+              <p className="text-[13px] text-gray-400">IPPIS No.</p>
               <p className="text-sm capitalize text-gray-700">
                 {maskInput(wacsData?.ippis, 0) || 'No data'}
               </p>
             </div>
             <div className="space-y-1 col-span-full md:col-span-1">
-              <p className="text-[13px] text-gray-300">Employer</p>
+              <p className="text-[13px] text-gray-400">Employer</p>
               <p className="text-sm text-gray-700 capitalize">
                 {wacsData?.employer || 'No data'}
               </p>
@@ -60,7 +60,7 @@ const Wacs = ({
           </div>
         </div>
       </div>
-      <InPageTabsComponent tabs={inFlightTabs} />
+      <InPageTabsComponent tabs={wacsTabs} />
     </>
   );
 };

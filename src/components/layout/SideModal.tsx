@@ -8,7 +8,7 @@ const SideModal = ({ isOpen, onClose, children }: SideModalProps) => {
       {isOpen && (
         <div className="fixed inset-0 z-50 flex">
           <div
-            className="fixed inset-0 z-top bg-black bg-opacity-60"
+            className="fixed inset-0 z-top bg-black/60"
             onClick={onClose}
           ></div>
           <motion.div

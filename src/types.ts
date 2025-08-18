@@ -7,7 +7,23 @@ import {
   Row,
 } from '@tanstack/react-table';
 
-import { RepaymentDetail } from '@/services/apiQueries/repaymentsApi';
+export interface RepaymentDetail {
+  id?: number;
+  repaymentID?: string;
+  customerID: string;
+  loanNumber: string;
+  repaymentChannel: string;
+  repaymentNumber: string;
+  amount: number;
+  dueDate: string;
+  repaymentDate: string;
+  outstandingRepayment: number;
+  loanBalance: number;
+  createDate?: string;
+  lastModified?: string;
+  createdBy?: string;
+  lastModifiedBy?: string;
+}
 
 export type ItemProps = {
   icon: ReactNode;
@@ -1091,4 +1107,38 @@ export interface Repayment {
   repaymentChannel: string;
   loan: Loan;
   customer: RepaymentCustomer;
+}
+
+export interface LoanResponse {
+  id: number;
+  customerID: string;
+  loanNumber: string;
+  vendorID?: string;
+  vendorName?: string;
+  customerName: string;
+  phoneNumber: string;
+  email: string;
+  currency?: string;
+  amount: number;
+  interestRate?: number;
+  duration: number;
+  interest: number;
+  lateFee?: number;
+  totalRepaymentAmount?: number;
+  installmentAmount?: number;
+  amountPaid: number;
+  outstandingAmount?: number;
+  zohoInvoiceID?: string;
+  zohoInvoiceNo?: string;
+  zohoCustomerID?: string;
+  createDate: string;
+  lastModified?: string;
+  createdBy?: string;
+  lastModifiedBy?: string;
+  status: string;
+}
+
+export interface SelectOption {
+  value: string;
+  label: string;
 }

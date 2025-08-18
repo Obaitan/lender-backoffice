@@ -5,14 +5,9 @@ import CustomerDocuments from '@/app/(app)/customer-information/[rowID]/Customer
 import CustomerProfilePicture from '@/app/(app)/customer-information/[rowID]/CustomerProfilePicture';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Customer, FinancialData, EmploymentData } from '@/types';
-import { formatDate } from '@/utils/functions';
-import { maskMiddleDigits } from '@/utils/maskAccountNumber';
+import { formatDate, maskMiddleDigits } from '@/utils/functions';
 import FieldVerificationStatus from './FieldVerificationStatus';
-import VerificationSummary from './VerificationSummary';
-import { VerificationStatus } from './VerificationStatusIcon';
 import { toast } from 'react-toastify';
-import BVNVerificationService from '@/services/bvnVerificationService';
-import { AuthService } from '@/services/authService';
 
 export default function GeneralInfo({
   phoneNumber,
@@ -29,49 +24,81 @@ export default function GeneralInfo({
   // Calculate verification data from customer data
   const calculateVerificationData = useCallback(() => {
     const verificationFields = [
-      { field: 'firstName', verified: customerData?.firstNameVerified, label: 'First Name' },
-      { field: 'lastName', verified: customerData?.lastNameVerified, label: 'Last Name' },
-      { field: 'phoneNumber', verified: customerData?.phoneNumberVerified, label: 'Phone Number' },
+      {
+        field: 'firstName',
+        verified: customerData?.firstNameVerified,
+        label: 'First Name',
+      },
+      {
+        field: 'lastName',
+        verified: customerData?.lastNameVerified,
+        label: 'Last Name',
+      },
+      {
+        field: 'phoneNumber',
+        verified: customerData?.phoneNumberVerified,
+        label: 'Phone Number',
+      },
       { field: 'email', verified: customerData?.emailVerified, label: 'Email' },
-      { field: 'gender', verified: customerData?.genderVerified, label: 'Gender' },
-      { field: 'dateOfBirth', verified: customerData?.dateOfBirthVerified, label: 'Date of Birth' },
-      { field: 'maritalStatus', verified: customerData?.maritalStatusVerified, label: 'Marital Status' },
+      {
+        field: 'gender',
+        verified: customerData?.genderVerified,
+        label: 'Gender',
+      },
+      {
+        field: 'dateOfBirth',
+        verified: customerData?.dateOfBirthVerified,
+        label: 'Date of Birth',
+      },
+      {
+        field: 'maritalStatus',
+        verified: customerData?.maritalStatusVerified,
+        label: 'Marital Status',
+      },
       { field: 'nin', verified: financialData?.ninVerified, label: 'NIN' },
       { field: 'bvn', verified: financialData?.bvnVerified, label: 'BVN' },
-      { field: 'accountNumber', verified: financialData?.accountNumberVerified, label: 'Account Number' },
+      {
+        field: 'accountNumber',
+        verified: financialData?.accountNumberVerified,
+        label: 'Account Number',
+      },
     ];
 
     const issues = verificationFields
-      .filter(field => field.verified === false)
-      .map(field => ({
+      .filter((field) => field.verified === false)
+      .map((field) => ({
         field: field.label,
-        message: `${field.label} verification failed`
+        message: `${field.label} verification failed`,
       }));
 
-    const verifiedCount = verificationFields.filter(field => field.verified === true).length;
+    const verifiedCount = verificationFields.filter(
+      (field) => field.verified === true
+    ).length;
     const totalFields = verificationFields.length;
 
     return {
       issues,
       verifiedFields: verifiedCount,
-      totalFields
+      totalFields,
     };
   }, [customerData, financialData]);
 
-  const [verificationData, setVerificationData] = useState(calculateVerificationData());
-
-  // Initialize BVN Verification Service (no token needed, handled server-side)
-  const bvnService = new BVNVerificationService();
+  const [verificationData, setVerificationData] = useState(
+    calculateVerificationData()
+  );
 
   // Update verification data when customer data changes
   useEffect(() => {
     setVerificationData(calculateVerificationData());
-  }, [customerData, financialData, calculateVerificationData]);
+  }, [customerData, financialData]);
 
   // Get field verification status from customer data
-  const getFieldVerificationStatus = (field: string, value: string | number | null | undefined): VerificationStatus => {
+  const getFieldVerificationStatus = (
+    field: string,
+    value: string | number | null | undefined
+): 'verified' | 'failed' | 'pending' | 'not_available' => {
     if (!value || value === 'No data') return 'not_available';
-    
+
     // Map field names to verification status from customer data
     const verificationMap: Record<string, boolean | undefined> = {
       firstName: customerData?.firstNameVerified,
@@ -85,9 +112,9 @@ export default function GeneralInfo({
       bvn: financialData?.bvnVerified,
       accountNumber: financialData?.accountNumberVerified,
     };
-    
+
     const isVerified = verificationMap[field];
-    
+
     if (isVerified === true) return 'verified';
     if (isVerified === false) return 'failed';
     return 'pending';
@@ -100,7 +127,7 @@ export default function GeneralInfo({
     }
 
     setIsVerifying(true);
-    
+
     try {
       // Prepare customer data for verification
       const customerInfo = {
@@ -115,31 +142,6 @@ export default function GeneralInfo({
         maritalStatus: customerData?.maritalStatus,
         financialData: financialData,
       };
-
-      // Get user email from auth service
-      const user = AuthService.getCurrentUser();
-      const userEmail = user?.email;
-
-      // Call BVN verification service
-      console.log('Customer info for verification:', customerInfo);
-      console.log('User email:', userEmail);
-      const results = await bvnService.verifyBVN(
-        financialData.bvn,
-        customerInfo,
-        undefined, // selfieImage
-        userEmail
-      );
-
-
-      // BVN verification completed - the verification status will be updated by the backend
-      // and reflected in the next data fetch. For now, just show success message.
-      
-      if (results.isVerified) {
-        toast.success('BVN verification completed successfully! Customer verification status updated.');
-      } else {
-        toast.warning('BVN verification completed with some issues.');
-      }
-      
       // Optionally refresh the verification data display
       setVerificationData(calculateVerificationData());
     } catch (error) {
@@ -152,15 +154,6 @@ export default function GeneralInfo({
 
   return (
     <div className="grid grid-cols-1 gap-7">
-      {/* Verification Summary */}
-      <VerificationSummary 
-        issues={verificationData.issues}
-        verifiedFields={verificationData.verifiedFields}
-        totalFields={verificationData.totalFields}
-        onVerify={handleVerify}
-        isVerifying={isVerifying}
-      />
-
       <div className="grid grid-cols-1 gap-4 border-b border-b-gray-50 pb-7">
         <div className="flex items-center gap-3 text-gray-800 font-medium">
           Personal Details <Checkbox />
@@ -169,12 +162,18 @@ export default function GeneralInfo({
           <FieldVerificationStatus
             label="First Name"
             value={customerData?.firstName}
-            status={getFieldVerificationStatus('firstName', customerData?.firstName)}
+            status={getFieldVerificationStatus(
+              'firstName',
+              customerData?.firstName
+            )}
           />
           <FieldVerificationStatus
             label="Last Name"
             value={customerData?.lastName}
-            status={getFieldVerificationStatus('lastName', customerData?.lastName)}
+            status={getFieldVerificationStatus(
+              'lastName',
+              customerData?.lastName
+            )}
           />
           <FieldVerificationStatus
             label="Phone Number"
@@ -188,8 +187,15 @@ export default function GeneralInfo({
           />
           <FieldVerificationStatus
             label="Date of Birth"
-            value={customerData?.dateOfBirth ? formatDate(customerData.dateOfBirth, false) : null}
-            status={getFieldVerificationStatus('dateOfBirth', customerData?.dateOfBirth)}
+            value={
+              customerData?.dateOfBirth
+                ? formatDate(customerData.dateOfBirth, false)
+                : null
+            }
+            status={getFieldVerificationStatus(
+              'dateOfBirth',
+              customerData?.dateOfBirth
+            )}
           />
           <FieldVerificationStatus
             label="Gender"
@@ -199,7 +205,10 @@ export default function GeneralInfo({
           <FieldVerificationStatus
             label="Marital Status"
             value={customerData?.maritalStatus}
-            status={getFieldVerificationStatus('maritalStatus', customerData?.maritalStatus)}
+            status={getFieldVerificationStatus(
+              'maritalStatus',
+              customerData?.maritalStatus
+            )}
           />
         </div>
       </div>
@@ -210,21 +219,32 @@ export default function GeneralInfo({
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-2 gap-y-5">
           <FieldVerificationStatus
             label="NIN"
-            value={financialData?.nin ? maskMiddleDigits(financialData.nin) : null}
+            value={
+              financialData?.nin ? maskMiddleDigits(financialData.nin) : null
+            }
             status={getFieldVerificationStatus('nin', financialData?.nin)}
           />
           <FieldVerificationStatus
             label="BVN"
-            value={financialData?.bvn ? maskMiddleDigits(financialData.bvn) : null}
+            value={
+              financialData?.bvn ? maskMiddleDigits(financialData.bvn) : null
+            }
             status={getFieldVerificationStatus('bvn', financialData?.bvn)}
           />
           <div className="col-span-full md:col-span-1">
             <FieldVerificationStatus
               label={financialData?.bank || 'Bank Account'}
-              value={financialData?.accountNumber && financialData?.accountName 
-                ? `${maskMiddleDigits(financialData.accountNumber)}, ${financialData.accountName}`
-                : null}
-              status={getFieldVerificationStatus('accountNumber', financialData?.accountNumber)}
+              value={
+                financialData?.accountNumber && financialData?.accountName
+                  ? `${maskMiddleDigits(financialData.accountNumber)}, ${
+                      financialData.accountName
+                    }`
+                  : null
+              }
+              status={getFieldVerificationStatus(
+                'accountNumber',
+                financialData?.accountNumber
+              )}
             />
           </div>
           <FieldVerificationStatus
@@ -257,17 +277,21 @@ export default function GeneralInfo({
           <FieldVerificationStatus
             label="Employer"
             value={employmentData?.employer}
-            status="not_available"
+            status={getFieldVerificationStatus('employer', employmentData?.employer)}
           />
           <FieldVerificationStatus
             label="Monthly Salary"
-            value={employmentData?.salary ? `₦ ${employmentData.salary.toLocaleString('en-US')}` : null}
-            status="not_available"
+            value={
+              employmentData?.salary
+                ? `₦ ${employmentData.salary.toLocaleString('en-US')}`
+                : null
+            }
+            status={getFieldVerificationStatus('salary', employmentData?.salary)}
           />
           <FieldVerificationStatus
             label="Employer Address"
             value={employmentData?.employerAddress}
-            status="not_available"
+            status={getFieldVerificationStatus('employerAddress', employmentData?.employerAddress)}
             className="col-span-full lg:col-span-1"
           />
         </div>

@@ -5,7 +5,6 @@ import { useState } from 'react';
 import Image from 'next/image';
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuItem,
@@ -30,44 +29,32 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  FunnelIcon,
-  ViewColumnsIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/solid';
-import { DataTableProps, Loan, LoanRepaymment } from '@/types';
+import { FunnelIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import { DataTableProps } from '@/types';
 import { TablePagination } from '@/components/table/TablePagination';
 import SideModal from '@/components/layout/SideModal';
-import CustomerLoanDetailsComponent from './other-components/CustomerLoanDetails';
-import ExportButton from '@/components/table/ExportButton';
-import { dummyRepaymentDetails } from '@/utils/dummyData';
+import Tooltip from '@/components/general/Tooltip';
+import SetupMessageDetails from './CreateMessageTemplate';
+import { MessageTemplate } from './setupColumns';
+import { MessageSquarePlus } from 'lucide-react';
 
-export function DataTable<TData extends Record<string, unknown>, TValue>({
+export function DataTable<TValue>({
   columns,
   data,
-  columnFileName,
-  emptyMessage = 'No records to display.',
-}: DataTableProps<TData, TValue> & {
-  columnFileName?: string;
-  emptyMessage?: string;
-}) {
+}: DataTableProps<MessageTemplate, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [openDetailsModal, setOpenDetailsModal] = useState(false);
-  const [selectedRowData, setSelectedRowData] = useState<Loan | null>(null);
-  const [loanRepayments, setLoanRepayments] = useState<LoanRepaymment[] | null>(
-    null
-  );
+  const [addMessageModal, setAddMessageModal] = useState(false);
 
-  const openModal = () => {
-    setOpenDetailsModal(true);
+  const openMessageModal = () => {
+    setAddMessageModal(true);
   };
 
-  const closeModal = () => {
-    setOpenDetailsModal(false);
+  const closeMessageModal = () => {
+    setAddMessageModal(false);
   };
 
   const table = useReactTable({
@@ -99,49 +86,9 @@ export function DataTable<TData extends Record<string, unknown>, TValue>({
     filteredColumns[0]?.id || ''
   );
 
-  const handleRowClick = async (loan: Loan) => {
-    setSelectedRowData(loan);
-    openModal();
-
-    // Transform repayment data to match LoanRepaymment interface
-    const repayments: LoanRepaymment[] = dummyRepaymentDetails.map(detail => ({
-      id: detail.id,
-      loanNumber: detail.loanNumber,
-      repaymentNumber: detail.repaymentNumber,
-      principalAmount: detail.amount * 0.8, // Assuming 80% is principal
-      interestAmount: detail.amount * 0.2,  // Assuming 20% is interest
-      lateFee: 0, // Default to 0 or calculate based on your logic
-      outstandingAmount: detail.outstandingRepayment,
-      amountPaid: detail.amount,
-      dueDate: detail.dueDate,
-      repaymentDate: detail.repaymentDate,
-      createDate: detail.createDate,
-      status: detail.outstandingRepayment > 0 ? 'Outstanding' : 'Paid',
-      repaymentChannel: detail.repaymentChannel,
-    }));
-    setLoanRepayments(repayments);
-  };
-
-  // Get selected rows
-  const selectedRows = table
-    .getSelectedRowModel()
-    .rows.map((row) => row.original);
-  const selectedCount = selectedRows.length;
-
-  // Get table name from the column file name prop
-  let tableName = 'loan-table-export.csv';
-  if (columnFileName) {
-    tableName =
-      columnFileName
-        .replace(/Columns?$/, '')
-        .replace(/([a-z])([A-Z])/g, '$1-$2')
-        .replace(/_/g, '-')
-        .toLowerCase() + '.csv';
-  }
-
   return (
     <div>
-      <div className="flex items-center gap-4 pb-4">
+      <div className="flex items-center justify-between gap-4 pb-4">
         <div className="flex flex-wrap items-end gap-3">
           {filteredColumns.map(
             (column) =>
@@ -194,43 +141,16 @@ export function DataTable<TData extends Record<string, unknown>, TValue>({
           </DropdownMenu>
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="bg-white border text-secondary-200 border-secondary-200 rounded p-1.5 ml-auto hover:text-white hover:bg-secondary-200 outline-none">
-              <ViewColumnsIcon className="h-6 w-6" />
+        <div className="flex gap-3">
+          <Tooltip content="New Template" className="!left-auto">
+            <button
+              onClick={openMessageModal}
+              className="flex items-center justify-center text-secondary-200 h-9 w-9 rounded-full border border-secondary-200 hover:bg-secondary-200 hover:text-white"
+            >
+              <MessageSquarePlus className="w-5 h-5" />
             </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize text-gray-700"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        {data.length > 0 && (
-          <ExportButton
-            onClick={() => {}}
-            selectedData={selectedRows}
-            allData={data}
-            selectedCount={selectedCount}
-            allCount={data.length}
-            filename={tableName}
-            disabled={false}
-          />
-        )}
+          </Tooltip>
+        </div>
       </div>
 
       <div className="rounded border">
@@ -258,25 +178,30 @@ export function DataTable<TData extends Record<string, unknown>, TValue>({
           </TableHeader>
           <TableBody className="text-gray-600">
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  onClick={() =>
-                    handleRowClick(row.original as unknown as Loan)
-                  } // Store row data
-                  className="cursor-pointer"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell className="px-3 py-2" key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              table.getRowModel().rows.map((row) => {
+                const rowData = row.original as MessageTemplate;
+                const isInactive =
+                  rowData.status &&
+                  String(rowData.status).toLowerCase() === 'inactive';
+                return (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    className={`hover:bg-transparent ${
+                      isInactive ? 'text-gray-200' : ''
+                    }`}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell className="px-3 py-2" key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })
             ) : (
               <TableRow>
                 <TableCell
@@ -292,7 +217,7 @@ export function DataTable<TData extends Record<string, unknown>, TValue>({
                       priority
                       className="w-32 mx-auto"
                     />
-                    <p className="mt-2">{emptyMessage}</p>
+                    <p className="mt-2">No records to display.</p>
                   </div>
                 </TableCell>
               </TableRow>
@@ -301,13 +226,9 @@ export function DataTable<TData extends Record<string, unknown>, TValue>({
         </Table>
       </div>
       <TablePagination table={table} />
-      <SideModal isOpen={openDetailsModal} onClose={closeModal}>
-        {selectedRowData && (
-          <CustomerLoanDetailsComponent
-            data={selectedRowData}
-            repayments={loanRepayments}
-          />
-        )}
+
+      <SideModal isOpen={addMessageModal} onClose={closeMessageModal}>
+        <SetupMessageDetails closeForm={closeMessageModal} />
       </SideModal>
     </div>
   );

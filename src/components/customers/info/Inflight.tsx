@@ -60,7 +60,7 @@ export default function Inflight({
         <div className="grid grid-cols-1 gap-4 pb-10">
           <div className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 gap-x-4 gap-y-8">
             <div className="space-y-1">
-              <p className="text-[13px] text-gray-300">Inflight Status</p>
+              <p className="text-[13px] text-gray-400">Inflight Status</p>
               <p
                 className={`text-sm capitalize ${
                   inflightRecord ? 'text-success-500' : 'text-warning-300'
@@ -70,13 +70,13 @@ export default function Inflight({
               </p>
             </div>
             <div className="space-y-1">
-              <p className="text-[13px] text-gray-300">Inflight Customer ID</p>
+              <p className="text-[13px] text-gray-400">Inflight Customer ID</p>
               <p className="text-sm text-gray-700 capitalize">
                 {inflightRecord?.remitaCustomerID || 'No data'}
               </p>
             </div>
             <div>
-              <p className="text-[13px] text-gray-300">Active Mandates</p>
+              <p className="text-[13px] text-gray-400">Active Mandates</p>
               <p className="text-sm text-gray-700">
                 {
                   (loanHistory || []).filter((loan) => loan.status === 'Active')
@@ -85,7 +85,7 @@ export default function Inflight({
               </p>
             </div>
             <div>
-              <p className="text-[13px] text-gray-300">Total Outstanding</p>
+              <p className="text-[13px] text-gray-400">Total Outstanding</p>
               <p className="text-sm text-gray-700">
                 ₦{' '}
                 {(loanHistory || [])
@@ -94,7 +94,7 @@ export default function Inflight({
               </p>
             </div>
             <div className="space-y-1 col-span-full md:col-span-2 2xl:col-span-1">
-              <p className="text-[13px] text-gray-300">Employer</p>
+              <p className="text-[13px] text-gray-400">Employer</p>
               <p className="text-sm text-gray-700 capitalize">
                 {inflightRecord?.companyName || 'No data'}
               </p>

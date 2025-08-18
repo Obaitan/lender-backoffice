@@ -764,7 +764,7 @@ export const paystackCardRepaymentRecords = [
 
 import { RepaymentItem } from '@/types';
 
-const dummyRepaymentDetails = [
+export const dummyRepaymentDetails = [
   {
     id: 1,
     repaymentID: 'RPT-1001',
@@ -1122,53 +1122,25 @@ export const dummyLoanApplications = [
     applicationDate: '2024-01-10',
     loanAmount: '400,000.00',
     adjustedLoanAmount: '400,000.00',
-    workFlowStatus: 'Dropped',
-  },
-];
-
-// Dummy data for inactive customers (incomplete signups)
-export const dummyInactiveCustomers = [
-  {
-    id: 1,
-    customerID: 'CUST-007',
-    name: 'Ahmed Bello',
-    phoneNumber: '08043210987',
-    email: 'ahmed.bello@email.com',
-    rmCode: 'RM001',
-    signUpDate: '2024-01-09',
-    status: 'Inactive',
-  },
-  {
-    id: 2,
-    customerID: 'CUST-008',
-    name: 'Fatima Yusuf',
-    phoneNumber: '08032109876',
-    email: 'fatima.yusuf@email.com',
-    rmCode: 'RM002',
-    signUpDate: '2024-01-08',
-    status: 'Inactive',
+    workFlowStatus: 'Declined',
   },
 ];
 
 // Dummy tab counts and trends
 export const dummyTabCounts = {
-  incompleteSignups: 2,
   readyToDisburse: 1,
   inProgress: 1,
   newApplications: 1,
   approved: 1,
-  declined: 1,
-  dropped: 1,
+  declined: 2,
 };
 
 export const dummyTabTrends = {
-  incompleteSignups: 0,
   readyToDisburse: 1,
   inProgress: -1,
   newApplications: 2,
   approved: 3,
   declined: -2,
-  dropped: 0,
 };
 
 // Helper functions to filter dummy data by status

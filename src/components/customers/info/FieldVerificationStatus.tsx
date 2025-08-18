@@ -21,7 +21,7 @@ const FieldVerificationStatus: React.FC<FieldVerificationStatusProps> = ({
   return (
     <div className={`space-y-1 ${className}`}>
       <div className="flex items-center gap-2">
-        <p className="text-[13px] text-gray-300">{label}</p>
+        <p className="text-[13px] text-gray-400">{label}</p>
         <VerificationStatusIcon 
           status={status} 
           tooltipText={

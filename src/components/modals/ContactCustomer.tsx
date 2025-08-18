@@ -77,7 +77,7 @@ const ContactCustomer = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
       onClick={onClose}
     >
       <div
@@ -92,7 +92,7 @@ const ContactCustomer = ({
 
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-error-400 transition-colors"
+            className="text-gray-400 hover:text-error-400 transition-colors cursor-pointer"
           >
             <XMarkIcon className="h-6 w-6" />
           </button>

@@ -2,7 +2,6 @@ import GeneralInformation from './GeneralInfo';
 import LoanHistory from './LoanHistory';
 import Inflight from './Inflight';
 import MonoGsm from './MonoGsm';
-import MonoEmandate from './MonoEmandate';
 import PaystackDd from './PaystackDd';
 import PaystackCard from './PaystackCard';
 import Wacs from './Wacs';
@@ -86,10 +85,8 @@ export const CustomerTabsInfo = ({
       ),
     },
     { label: 'Mono GSM', content: <MonoGsm /> },
-    { label: 'Mono DD-EM', content: <MonoEmandate customerData={customerData} financialData={financialData} /> },
     { label: 'Paystack DD', content: <PaystackDd /> },
     { label: 'Paystack Card', content: <PaystackCard /> },
-    // { label: 'Other Financials', content: <OtherFinancials /> },
   ];
 
   return <CustomerDetailsTemplate tabs={customerTabsArray} />;

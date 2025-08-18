@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { PanelBottomCloseIcon } from 'lucide-react';
+import { useState } from 'react';
+import { Loader2, PanelBottomCloseIcon } from 'lucide-react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
+import Select from '../../forms/Select';
 import { InnerTabsComponent } from '../../navigation/InnerTabs';
 import Details from './Details';
 import ActivityHistory from './ActivityHistory';
-import { LoanService, LoanResponse } from '@/services/loanService';
+import { LoanResponse, SelectOption } from '@/types';
 
 // Define interface for reviewInfo props
 interface ReviewInfoProps {
@@ -17,42 +18,33 @@ interface ReviewInfoProps {
 
 const ReviewPanel = ({ reviewInfo }: { reviewInfo: ReviewInfoProps }) => {
   const [openPanel, setOpenPanel] = useState<boolean>(false);
+  const [loans, setLoans] = useState<SelectOption[]>([]);
+  const [loadedLoans, setLoadedLoans] = useState<LoanResponse[]>([]);
   const [selectedLoan, setSelectedLoan] = useState<string>('');
   const [selectedLoanData, setSelectedLoanData] = useState<LoanResponse | null>(
     null
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [activityRefreshTrigger, setActivityRefreshTrigger] = useState<number>(0);
+  const [error, setError] = useState<string | null>(null);
 
-  // Fetch customer loans when panel opens or reviewInfo changes
-  useEffect(() => {
-    const fetchCustomerLoans = async () => {
-      if (!reviewInfo.customerID || reviewInfo.customerID === 'N/A') {
-        return;
-      }
-      setIsLoading(true);
-      try {
-        const customerLoans = await LoanService.getLoansByCustomerID(
-          reviewInfo.customerID
-        );
-        if (customerLoans && customerLoans.length > 0) {
-          const firstLoanNumber = customerLoans[0].loanNumber;
-          setSelectedLoan(firstLoanNumber);
-          const loanDetails =
-            customerLoans.find((loan) => loan.loanNumber === firstLoanNumber) ||
-            null;
-          setSelectedLoanData(loanDetails);
-        }
-      } catch (err) {
-        console.error('Error fetching customer loans:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    if (openPanel) {
-      fetchCustomerLoans();
+  // Fetch loans when component mounts or reviewInfo changes
+
+  // Handle loan selection change
+  const handleLoanChange = (loanNumber: string) => {
+    setSelectedLoan(loanNumber);
+
+    // Find the selected loan from already loaded loans
+    const loanDetails =
+      loadedLoans.find((loan) => loan.loanNumber === loanNumber) || null;
+    setSelectedLoanData(loanDetails);
+
+    if (loanDetails) {
+      console.log('Selected loan details from cache:', loanDetails);
+    } else {
+      console.log('Could not find details for loan:', loanNumber);
+      setError(`Could not find details for loan ${loanNumber}`);
     }
-  }, [reviewInfo.customerID, openPanel]);
+  };
 
   const togglePanel = () => {
     setOpenPanel(!openPanel);
@@ -60,27 +52,12 @@ const ReviewPanel = ({ reviewInfo }: { reviewInfo: ReviewInfoProps }) => {
 
   const reviewTabs = [
     {
-      label: 'Comments & History',
-      content: (
-        <ActivityHistory
-          loanNumber={selectedLoan}
-          customerID={reviewInfo.customerID}
-          refreshTrigger={activityRefreshTrigger}
-        />
-      ),
+      label: 'Details',
+      content: <Details loanData={selectedLoanData} isLoading={isLoading} />,
     },
     {
-      label: 'Manage Application',
-      content: (
-        <Details 
-          loanData={selectedLoanData} 
-          isLoading={isLoading}
-          onActivityCreated={() => {
-            // Trigger refresh in ActivityHistory when activity is created
-            setActivityRefreshTrigger(prev => prev + 1);
-          }}
-        />
-      ),
+      label: 'Activity History',
+      content: <ActivityHistory loanNumber={selectedLoan} />,
     },
   ];
 
@@ -106,7 +83,29 @@ const ReviewPanel = ({ reviewInfo }: { reviewInfo: ReviewInfoProps }) => {
           >
             <XMarkIcon className="w-4 h-4" />
           </button>
-          <div className="mt-4 mb-6">
+          <div>
+            <div className="my-6">
+              <p className="text-sm mb-1.5 text-gray-400">
+                Select Loan / Application
+              </p>
+              {isLoading && loans.length === 0 ? (
+                <div className="flex justify-center py-4">
+                  <Loader2 className="animate-spin text-secondary-200" />
+                </div>
+              ) : error && loans.length === 0 ? (
+                <div className="p-3 bg-red-50 text-red-700 rounded text-sm">
+                  {error}
+                </div>
+              ) : (
+                <Select
+                  options={loans}
+                  selectedValue={selectedLoan}
+                  placeholder="Select loan"
+                  onChange={(value) => handleLoanChange(value)}
+                  buttonStyle="!border-[#eee]"
+                />
+              )}
+            </div>
             <InnerTabsComponent tabs={reviewTabs} />
           </div>
         </div>

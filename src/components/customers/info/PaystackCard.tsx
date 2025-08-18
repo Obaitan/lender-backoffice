@@ -19,19 +19,19 @@ const PaystackCard = () => {
     <div className="xl:px-2">
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-5 pb-10 xl:px-2">
         <div className="space-y-1">
-          <p className="text-[13px] text-gray-300">Name on Card</p>
+          <p className="text-[13px] text-gray-400">Name on Card</p>
           <p className="text-sm text-gray-700">
             {card.nameOnCard || 'No data'}
           </p>
         </div>
         <div className="space-y-1">
-          <p className="text-[13px] text-gray-300">Card Number</p>
+          <p className="text-[13px] text-gray-400">Card Number</p>
           <p className="text-sm text-gray-700 capitalize">
             {maskInput(card.cardNumber) || 'No data'}
           </p>
         </div>
         <div className="space-y-1">
-          <p className="text-[13px] text-gray-300">Card Type</p>
+          <p className="text-[13px] text-gray-400">Card Type</p>
           <p className="text-sm text-gray-700 capitalize">
             {card?.cardIssuer && card?.cardType
               ? `${card.cardIssuer} | ${card.cardType}`
@@ -39,7 +39,7 @@ const PaystackCard = () => {
           </p>
         </div>
         <div className="space-y-1">
-          <p className="text-[13px] text-gray-300">Card Expiration Date</p>
+          <p className="text-[13px] text-gray-400">Card Expiration Date</p>
           <p className="text-sm text-gray-700 capitalize">
             {card.expiryDate || 'No data'}
           </p>

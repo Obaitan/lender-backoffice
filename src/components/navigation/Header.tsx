@@ -35,12 +35,15 @@ const HeaderComponent = ({ openSidebar }: { openSidebar?: () => void }) => {
         </p>
 
         <div className="flex items-center gap-4 md:gap-5">
-          <button className="bg-[#f9f9f9] w-9 h-9 rounded-full border border-gray-200 flex justify-center items-center hover:bg-secondary-50 relative cursor-pointer">
+          <Link
+            href="/notifications"
+            className="bg-[#f9f9f9] w-9 h-9 rounded-full border border-gray-200 flex justify-center items-center hover:bg-secondary-50 relative cursor-pointer"
+          >
             <span className="absolute -top-0.5 -right-1.5 flex items-center justify-center bg-error-300 font-semibold text-[10px] text-white h-4 w-4 rounded-full">
               2
             </span>
             <BellRing className="w-6 h-6 text-secondary-200/60" />
-          </button>
+          </Link>
           <Link href="/settings" className="flex items-center gap-2.5">
             {dummyUser?.profilePicture ? (
               <div className="relative h-9 w-9 overflow-hidden flex justify-center items-center rounded-full border border-disabled">

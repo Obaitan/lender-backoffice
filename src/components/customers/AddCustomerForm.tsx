@@ -5,9 +5,7 @@ import { Button } from '@/components/general/Button';
 import { useForm } from 'react-hook-form';
 import validator from 'validator';
 import Select from '../forms/Select';
-import { AuthService, API_CONFIG } from '@/services/authService';
 import { Loader2 } from 'lucide-react';
-import { toast } from 'react-toastify';
 
 interface AddCustomerFormProps {
   onClose?: () => void;
@@ -31,7 +29,9 @@ interface CustomerFormInputs {
   landMark: string;
 }
 
-const AddCustomerForm: React.FC<AddCustomerFormProps> = ({ onCustomerCreated }) => {
+const AddCustomerForm: React.FC<AddCustomerFormProps> = ({
+  onCustomerCreated,
+}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -118,83 +118,8 @@ const AddCustomerForm: React.FC<AddCustomerFormProps> = ({ onCustomerCreated }) 
   ];
 
   const onSubmit = handleSubmit(async (data) => {
-    try {
-      setIsSubmitting(true);
-      
-      // Validate required fields
-      if (!data.gender) {
-        toast.error('Gender is required');
-        return;
-      }
-      
-      if (!data.maritalStatus) {
-        toast.error('Marital status is required');
-        return;
-      }
-      
-      const currentUser = AuthService.getCurrentUser();
-      
-      // Format the date of birth to ISO format
-      const formattedDateOfBirth = new Date(data.dateOfBirth).toISOString();
-      
-      const newCustomer = {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phoneNumber: data.phoneNumber,
-        email: data.email,
-        gender: data.gender,
-        dateOfBirth: formattedDateOfBirth,
-        maritalStatus: data.maritalStatus,
-        createdBy: currentUser?.email || '',
-        lastModifiedBy: currentUser?.email || '',
-        status: data.status,
-        address: data.address,
-        city: data.city,
-        state: data.state,
-        country: data.country,
-        postalCode: data.postalCode,
-        landMark: data.landMark,
-      };
-
-      console.log('Creating customer with data:', newCustomer);
-
-      const headers = await AuthService.getAuthHeaders();
-      headers.append('Accept', 'text/plain');
-      headers.append('Content-Type', 'application/json');
-
-      const response = await fetch(
-        `${API_CONFIG.baseUrl}/api/V2/Customer/createCustomer`,
-        {
-          method: 'POST',
-          headers,
-          body: JSON.stringify(newCustomer),
-          redirect: 'follow',
-        }
-      );
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error creating customer:', errorText);
-        toast.error('Failed to create customer');
-        throw new Error(errorText || 'Failed to create customer');
-      }
-
-      const createdCustomer = await response.json();
-      console.log('Customer created successfully:', createdCustomer);
-
-      toast.success('Customer created successfully');
-      reset();
-      
-      // Refresh the customers list
-      if (onCustomerCreated) {
-        onCustomerCreated();
-      }
-    } catch (err) {
-      console.error('Error creating customer:', err);
-      toast.error(err instanceof Error ? err.message : 'Failed to create customer');
-    } finally {
-      setIsSubmitting(false);
-    }
+    // do nothing
+    console.log(data, 'data');
   });
 
   return (
@@ -357,7 +282,7 @@ const AddCustomerForm: React.FC<AddCustomerFormProps> = ({ onCustomerCreated }) 
         {/* Address Information */}
         <div className="my-4">
           <p className="text-gray-800 font-medium mb-3">Address Information</p>
-          
+
           <div className="grid grid-cols-1 gap-y-4">
             <div className="flex flex-col gap-y-1.5">
               <p className="text-[13px] text-gray-500">Address</p>

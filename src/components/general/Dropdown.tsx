@@ -42,7 +42,7 @@ export const Dropdown = ({
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 rounded-md shadow-sm border border-secondary-200 text-xs text-secondary-200 hover:opacity-75 px-2.5 py-1.5 outline-none"
+        className="flex items-center gap-1 rounded-md shadow-sm border border-secondary-200 text-xs text-secondary-200 hover:opacity-75 px-2.5 py-1.5 outline-none cursor-pointer"
       >
         <span className="sr-only">Open menu</span>
         {icon}
@@ -59,7 +59,7 @@ export const Dropdown = ({
                 onItemClick?.(item.label);
                 setIsOpen(false);
               }}
-              className="capitalize block w-full text-left text-sm text-gray-700 px-3 py-2 hover:bg-secondary-50 hover:text-secondary-200 rounded"
+              className="capitalize block w-full text-left text-sm text-gray-700 px-3 py-2 hover:bg-secondary-50 hover:text-secondary-200 round cursor-pointer"
             >
               {item.label}
             </button>

@@ -10,7 +10,7 @@ export const BackButton = () => {
     <button
       type="button"
       onClick={() => router.back()}
-      className="bg-transparent flex items-center gap-0.5 text-sm font-medium py-1.5 px-2.5 rounded-md text-secondary-200 hover:bg-[#f9f9f9] hover:font-semibold"
+      className="bg-transparent flex items-center gap-0.5 text-sm font-medium py-1.5 px-2.5 rounded-md text-secondary-200 hover:bg-[#f9f9f9] hover:font-semibold cursor-pointer"
     >
       <ArrowLeftIcon className="h-[18px] w-[18px] mr-1" /> Back
     </button>

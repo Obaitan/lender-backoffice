@@ -1,13 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon } from 'lucide-react';
 import { RepaymentTabsProps } from '@/types';
 import { Loader2 } from 'lucide-react';
 import PeriodFilter from '../general/PeriodFilter';
-import { buildTeamMemberUrl } from '@/utils/navigationUtils';
 import MultiTableExportButton from '@/components/table/MultiTableExportButton';
 
 interface TabsWithMetricsProps extends RepaymentTabsProps {
@@ -26,17 +25,7 @@ const TabsWithMetrics = ({
   setAppliedRange: setControlledRange,
 }: TabsWithMetricsProps) => {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const pagePath = pathname.split('/')[2];
-
-  // Function to build URL with team member parameters
-  const buildTabUrl = (tabUrl: string) => {
-    // Get the base path from current pathname (e.g., /applications, /dashboard, /loans, etc.)
-    const pathSegments = pathname.split('/').filter(segment => segment);
-    const basePath = pathSegments.length > 0 ? `/${pathSegments[0]}` : '';
-    const baseUrl = `${basePath}/${tabUrl}`;
-    return buildTeamMemberUrl(baseUrl, searchParams);
-  };
 
   // If controlled props are provided, use them; otherwise, use internal state
   const [uncontrolledRange, setUncontrolledRange] = useState<{
@@ -82,7 +71,7 @@ const TabsWithMetrics = ({
             links.map((item) => (
               <Link
                 key={item?.label}
-                href={buildTabUrl(item?.url ?? '')}
+                href={item?.url ?? ''}
                 className={`flex justify-center p-2.5 md:p-3 transition-all duration-300 ease-in-out ${
                   pagePath === item?.url
                     ? 'border-l-4 border-l-secondary-200 bg-secondary-50 shadow transform scale-105'

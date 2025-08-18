@@ -24,7 +24,7 @@ export const ScrollToTopComponent = () => {
   useEffect(() => {
     window.addEventListener('scroll', toggleVisible);
     return () => window.removeEventListener('scroll', toggleVisible);
-  });
+  }, []);
 
   return (
     <button

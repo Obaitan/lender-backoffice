@@ -11,7 +11,7 @@ const TabHeader = ({ label, url, isActive, onClick }: TabHeaderProps) => {
       className={`px-4 py-1.5 border-b-2 capitalize text-sm hover:bg-primary-50 ${
         isActive
           ? 'bg-primary-50 border-primary-200 text-primary-200 font-medium'
-          : 'bg-transparent border-transparent text-gray-300 font-normal'
+          : 'bg-transparent border-transparent text-gray-400 font-normal'
       }`}
       onClick={onClick}
     >
@@ -26,7 +26,7 @@ export const InPageTabsComponent = ({ tabs }: TabComponentProps) => {
   return (
     <>
       <div className="overflow-x-hidden xl:px-2">
-        <div className="flex gap-1.5 border-b border-b-gray-50 overflow-x-auto whitespace-nowrap scrollbar-hide">
+        <div className="flex gap-1.5 border-b border-b-gray-100 overflow-x-auto whitespace-nowrap scrollbar-hide">
           {tabs.map((tab, index) => (
             <TabHeader
               key={index}

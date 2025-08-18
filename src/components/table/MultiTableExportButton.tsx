@@ -106,15 +106,6 @@ export const useTableRegistration = (
 
   // Register/update table data
   useEffect(() => {
-    console.log(`🔄 Attempting to register table: ${tableName}`);
-    console.log(`📊 Data details:`, {
-      tableName,
-      dataLength: allData.length,
-      selectedCount,
-      hasData: allData.length > 0,
-      dataPreview: allData.slice(0, 2)
-    });
-    
     const tableData: TableData = {
       tableName,
       allData,
@@ -122,15 +113,20 @@ export const useTableRegistration = (
       selectedCount,
       allCount: allData.length,
     };
-    
+
     registerTable(tableData);
-    console.log(`✅ Successfully registered table: ${tableName} with ${allData.length} rows`);
-    
+
     return () => {
-      console.log(`❌ Unregistering table: ${tableName}`);
       unregisterTable(tableName);
     };
-  }, [tableName, allData, selectedData, selectedCount, registerTable, unregisterTable]);
+  }, [
+    tableName,
+    allData,
+    selectedData,
+    selectedCount,
+    registerTable,
+    unregisterTable,
+  ]);
 };
 
 // Main export button component
@@ -158,25 +154,17 @@ const MultiTableExportButton: React.FC<MultiTableExportButtonProps> = ({
         tab.label.toLowerCase().includes(tableName.toLowerCase()) ||
         tableName.toLowerCase().includes(tab.label.toLowerCase())
     );
-    
+
     return matchingTab ? matchingTab.label : tableName;
   };
 
   const handleExportAll = () => {
-    // Debug logging
-    console.log('handleExportAll called');
-    console.log('Available tables:', tablesArray.map(table => ({
-      name: table.tableName,
-      allCount: table.allCount,
-      dataLength: table.allData.length
-    })));
-    
     // Check if any table has data
     const totalCount = tablesArray.reduce(
       (sum, table) => sum + table.allCount,
       0
     );
-    
+
     console.log('Total count calculated:', totalCount);
 
     if (totalCount === 0) {
@@ -190,7 +178,6 @@ const MultiTableExportButton: React.FC<MultiTableExportButtonProps> = ({
     let count = 0;
 
     tablesArray.forEach((table) => {
-      console.log(`Processing table: ${table.tableName}, rows: ${table.allData.length}`);
       // Add table identifier to each row with user-friendly name
       const tableDisplayName = getTableDisplayName(table.tableName);
       const tableDataWithSource = table.allData.map((row) => ({
@@ -200,9 +187,6 @@ const MultiTableExportButton: React.FC<MultiTableExportButtonProps> = ({
       combinedData.push(...tableDataWithSource);
       count += table.allCount;
     });
-    
-    console.log('Final combined data length:', combinedData.length);
-    console.log('Final count:', count);
 
     setExportData(combinedData);
     setExportCount(count);
@@ -323,7 +307,7 @@ const MultiTableExportButton: React.FC<MultiTableExportButtonProps> = ({
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger asChild className="cursor-pointer">
           {children || (
             <button
               type="button"
