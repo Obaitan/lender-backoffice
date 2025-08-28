@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -10,43 +10,43 @@
   --font-mono: var(--font-geist-mono);
 
   /* Primary & Secondary Colors */
-  --color-primary-50: #FFF4E6;
-  --color-primary-100: #FFE0B3;
-  --color-primary-200: #FF8C42;
-  --color-secondary-50: #F0F4F8;
-  --color-secondary-100: #D6E4ED;
-  --color-secondary-200: #1E3A8A;
-  
+  --color-primary-50: #fff4e6;
+  --color-primary-100: #ffe0b3;
+  --color-primary-200: #ff8c42;
+  --color-secondary-50: #f0f4f8;
+  --color-secondary-100: #d6e4ed;
+  --color-secondary-200: #1e3a8a;
+
   /* Success Colors */
-  --color-success-50: #EAF6EC;
-  --color-success-100: #BCE4C5;
-  --color-success-200: #9CD7A9;
-  --color-success-300: #6FC482;
-  --color-success-400: #28A745;
-  --color-success-500: #1C7731;
-  
+  --color-success-50: #eaf6ec;
+  --color-success-100: #bce4c5;
+  --color-success-200: #9cd7a9;
+  --color-success-300: #6fc482;
+  --color-success-400: #28a745;
+  --color-success-500: #1c7731;
+
   /* Warning Colors */
-  --color-warning-50: #FFEFD3;
-  --color-warning-100: #FFDAA5;
-  --color-warning-200: #FFBF6D;
-  --color-warning-300: #FF790A;
-  --color-warning-400: #FF6000;
-  
+  --color-warning-50: #ffefd3;
+  --color-warning-100: #ffdaa5;
+  --color-warning-200: #ffbf6d;
+  --color-warning-300: #ff790a;
+  --color-warning-400: #ff6000;
+
   /* Error Colors */
-  --color-error-50: #FFDDDD;
-  --color-error-100: #FFC1C1;
-  --color-error-200: #FF9595;
-  --color-error-300: #FF2626;
-  --color-error-400: #AF0505;
-  
+  --color-error-50: #ffdddd;
+  --color-error-100: #ffc1c1;
+  --color-error-200: #ff9595;
+  --color-error-300: #ff2626;
+  --color-error-400: #af0505;
+
   /* Utility Colors */
   --color-transparent: #ffffff00;
   --color-disabled: #ccc;
   --color-background: #f1f1f1;
-  
+
   /* Box Shadows */
   --shadow-deep: 0px 8px 10px 2px rgba(0, 0, 0, 0.04);
-  
+
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
@@ -128,4 +128,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.input-style {
+  @apply text-sm rounded-md border border-gray-300 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-gray-700 placeholder:font-light outline-0 focus:border-2 focus:border-secondary-200/60;
 }

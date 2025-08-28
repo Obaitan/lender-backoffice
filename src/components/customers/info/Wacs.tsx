@@ -12,7 +12,6 @@ import { InPageTabsComponent } from '@/components/navigation/InPageTabs';
 // Replace Wacs record type definition (any) when aavailable
 const Wacs = ({
   wacsData,
-  mandates,
 }: {
   wacsData: WacsData;
   mandates: WacsMandate[] | null;
@@ -21,7 +20,7 @@ const Wacs = ({
   const wacsTabs = [
     {
       label: 'Mandates',
-      content: <WacsMandateTable record={mandates || []} />,
+      content: <WacsMandateTable />,
     },
   ];
 

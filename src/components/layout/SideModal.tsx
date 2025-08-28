@@ -22,7 +22,7 @@ const SideModal = ({ isOpen, onClose, children }: SideModalProps) => {
           >
             <button
               onClick={onClose}
-              className="bg-primary-50 absolute top-5 right-5 md:right-7 lg:right-8 flex items-center gap-0.5 text-[13px] py-1.5 px-2.5 rounded-full text-gray-600 hover:text-error-300 hover:bg-error-50 hover:bg-opacity-30"
+              className="bg-primary-50 absolute top-5 right-5 md:right-7 lg:right-8 flex items-center gap-0.5 text-[13px] py-1.5 px-2.5 rounded-full text-gray-600 hover:text-error-300 hover:bg-error-50 hover:bg-opacity-30 cursor-pointer"
             >
               <XMarkIcon className="h-4 w-4" /> Close
             </button>

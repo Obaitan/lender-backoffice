@@ -138,7 +138,7 @@ const AddCustomerForm: React.FC<AddCustomerFormProps> = ({
               <input
                 type="text"
                 placeholder="First Name"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('firstName', {
                   required: 'First name is required',
                 })}
@@ -157,7 +157,7 @@ const AddCustomerForm: React.FC<AddCustomerFormProps> = ({
               <input
                 type="text"
                 placeholder="Last Name"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('lastName', {
                   required: 'Last name is required',
                 })}
@@ -178,7 +178,7 @@ const AddCustomerForm: React.FC<AddCustomerFormProps> = ({
               <input
                 type="tel"
                 placeholder="2348012345678"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('phoneNumber', {
                   required: 'Phone number is required',
                   pattern: {
@@ -201,7 +201,7 @@ const AddCustomerForm: React.FC<AddCustomerFormProps> = ({
               <input
                 type="email"
                 placeholder="customer@example.com"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('email', {
                   required: 'Email is required',
                   validate: (value) =>
@@ -238,7 +238,7 @@ const AddCustomerForm: React.FC<AddCustomerFormProps> = ({
             <div className="w-full">
               <input
                 type="date"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('dateOfBirth', {
                   required: 'Date of birth is required',
                 })}
@@ -290,7 +290,7 @@ const AddCustomerForm: React.FC<AddCustomerFormProps> = ({
                 <input
                   type="text"
                   placeholder="Street address"
-                  className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                  className="input-style"
                   {...register('address')}
                 />
               </div>
@@ -303,7 +303,7 @@ const AddCustomerForm: React.FC<AddCustomerFormProps> = ({
                   <input
                     type="text"
                     placeholder="City"
-                    className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                    className="input-style"
                     {...register('city')}
                   />
                 </div>
@@ -327,7 +327,7 @@ const AddCustomerForm: React.FC<AddCustomerFormProps> = ({
                   <input
                     type="text"
                     placeholder="Country"
-                    className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                    className="input-style"
                     {...register('country')}
                   />
                 </div>
@@ -339,7 +339,7 @@ const AddCustomerForm: React.FC<AddCustomerFormProps> = ({
                   <input
                     type="text"
                     placeholder="Postal code"
-                    className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                    className="input-style"
                     {...register('postalCode')}
                   />
                 </div>
@@ -352,7 +352,7 @@ const AddCustomerForm: React.FC<AddCustomerFormProps> = ({
                 <input
                   type="text"
                   placeholder="Nearest landmark"
-                  className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                  className="input-style"
                   {...register('landMark')}
                 />
               </div>

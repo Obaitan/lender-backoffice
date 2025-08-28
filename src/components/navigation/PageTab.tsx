@@ -45,7 +45,7 @@ export const PageTab = ({
       </div>
 
       {tabs && (
-        <div className="flex gap-3.5 border-b border-b-gray-50 overflow-x-auto whitespace-nowrap scrollbar-hide">
+        <div className="flex gap-3.5 border-b border-b-gray-100 overflow-x-auto whitespace-nowrap scrollbar-hide">
           {tabs?.map((tab, index) => (
             <Link
               key={index}
@@ -53,7 +53,7 @@ export const PageTab = ({
               className={`px-1.5 py-0.5 border-b-2 uppercase text-[13px] hover:border-secondary-100 ${
                 pagePath === tab.url
                   ? 'border-secondary-200 text-secondary-200 font-medium'
-                  : 'border-transparent text-gray-300 font-normal'
+                  : 'border-transparent text-gray-400 font-normal'
               }`}
             >
               {tab.label}

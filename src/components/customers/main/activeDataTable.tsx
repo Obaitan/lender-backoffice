@@ -38,7 +38,6 @@ import {
 } from '@heroicons/react/24/solid';
 import { DataTableProps } from '@/types';
 import { TablePagination } from '@/components/table/TablePagination';
-import ExportButton from '@/components/table/ExportButton';
 
 interface CustomersDataTableProps<TData extends Record<string, unknown>, TValue>
   extends DataTableProps<TData, TValue> {
@@ -48,12 +47,7 @@ interface CustomersDataTableProps<TData extends Record<string, unknown>, TValue>
 export function DataTable<
   TData extends { id: number; phoneNumber?: string },
   TValue
->({
-  columns,
-  data,
-  columnFileName,
-  emptyMessage,
-}: CustomersDataTableProps<TData, TValue>) {
+>({ columns, data, emptyMessage }: CustomersDataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -61,7 +55,7 @@ export function DataTable<
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  
+
   const navigateToDetails = useNavigateToDetailsPage<TData>();
 
   const handleRowClick = (row: any) => {
@@ -96,23 +90,6 @@ export function DataTable<
   const [selectedFilter, setSelectedFilter] = useState(
     filteredColumns[0]?.id || ''
   );
-
-  // Get selected rows
-  const selectedRows = table
-    .getSelectedRowModel()
-    .rows.map((row) => row.original);
-  const selectedCount = selectedRows.length;
-
-  // Get table name from the column file name prop
-  let tableName = 'active-customers-table-export.csv';
-  if (columnFileName) {
-    tableName =
-      columnFileName
-        .replace(/Columns?$/, '')
-        .replace(/([a-z])([A-Z])/g, '$1-$2')
-        .replace(/_/g, '-')
-        .toLowerCase() + '.csv';
-  }
 
   return (
     <div>
@@ -170,17 +147,6 @@ export function DataTable<
         </div>
 
         <div className="flex gap-3">
-          {data.length > 0 && (
-            <ExportButton
-              onClick={() => {}}
-              selectedData={selectedRows as Record<string, unknown>[]}
-              allData={data as Record<string, unknown>[]}
-              selectedCount={selectedCount}
-              allCount={data.length}
-              filename={tableName}
-              disabled={false}
-            />
-          )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="bg-white border text-secondary-200 border-secondary-200 rounded p-1.5 ml-auto hover:text-white hover:bg-secondary-200 outline-none">

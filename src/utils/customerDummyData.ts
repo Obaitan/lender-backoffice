@@ -535,26 +535,6 @@ export const dummyActiveCustomers: CustomerTable[] = [
     signUpDate: '2024-01-13',
     status: 'Active',
   },
-  {
-    id: 4,
-    customerID: 'CUST-004',
-    name: 'Fatima Ibrahim',
-    phoneNumber: '08076543210',
-    email: 'fatima.ibrahim@email.com',
-    rmCode: 'RM004',
-    signUpDate: '2024-01-12',
-    status: 'Active',
-  },
-  {
-    id: 5,
-    customerID: 'CUST-005',
-    name: 'David Okoro',
-    phoneNumber: '08065432109',
-    email: 'david.okoro@email.com',
-    rmCode: 'RM005',
-    signUpDate: '2024-01-11',
-    status: 'Active',
-  },
 ];
 
 // Dummy customer table data for suspended customers
@@ -577,16 +557,6 @@ export const dummySuspendedCustomers: CustomerTable[] = [
     email: 'ahmed.bello@email.com',
     rmCode: 'RM007',
     signUpDate: '2024-01-09',
-    status: 'Suspended',
-  },
-  {
-    id: 8,
-    customerID: 'CUST-008',
-    name: 'Chioma Okafor',
-    phoneNumber: '08032109876',
-    email: 'chioma.okafor@email.com',
-    rmCode: 'RM008',
-    signUpDate: '2024-01-08',
     status: 'Suspended',
   },
 ];
