@@ -1,10 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { useNavigateToDetailsPage } from '@/hooks/useNavigateToDetailsPage';
-import { useTableRegistration } from '@/components/table/MultiTableExportButton';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -40,9 +38,12 @@ import {
 } from '@heroicons/react/24/solid';
 import { DataTableProps } from '@/types';
 import { TablePagination } from '@/components/table/TablePagination';
+import { useTableRegistration } from '@/components/table/MultiTableExportButton';
+import { useNavigateToDetailsPage } from '@/hooks/useNavigateToDetailsPage';
+import { createColumns } from './updateColumns';
 
 export function DataTable<
-  TData extends { id: number; phoneNumber?: string; customerID?: string },
+  TData extends { id: number; phoneNumber?: string },
   TValue
 >({
   columns,
@@ -54,7 +55,9 @@ export function DataTable<
   columnFileName?: string;
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
@@ -65,9 +68,12 @@ export function DataTable<
     navigateToDetails(row);
   };
 
+  // Use createColumns if available, otherwise use provided columns
+  const tableColumns = typeof createColumns === 'function' ? createColumns() : columns;
+
   const table = useReactTable({
     data,
-    columns,
+    columns: tableColumns as import('@tanstack/react-table').ColumnDef<TData, any>[],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -82,24 +88,7 @@ export function DataTable<
       columnVisibility,
       rowSelection,
     },
-    meta: {
-      onRowClick: handleRowClick, // Use handleRowClick instead of navigateToDetails
-    },
   });
-
-  // Memoize selected rows to prevent infinite re-renders
-  const selectedTableRows = useMemo(
-    () => table.getSelectedRowModel().rows.map((row) => row.original),
-    [rowSelection]
-  );
-
-  // Register this table with the export context
-  useTableRegistration(
-    columnFileName || 'Applications',
-    data,
-    selectedTableRows, // Use memoized value
-    selectedTableRows.length
-  );
 
   const filteredColumns = [...table.getAllColumns()];
   if (filteredColumns.length > 1) {
@@ -111,9 +100,27 @@ export function DataTable<
     filteredColumns[0]?.id || ''
   );
 
+  // Get selected rows for table registration
+  const selectedRows = React.useMemo(
+    () => table.getSelectedRowModel().rows.map((row) => row.original),
+    [table.getSelectedRowModel().rows]
+  );
+  const selectedCount = React.useMemo(
+    () => selectedRows.length,
+    [selectedRows]
+  );
+
+  // Register table with MultiTableExportButton system
+  useTableRegistration(
+    'Information Update Requests',
+    data,
+    selectedRows,
+    selectedCount
+  );
+
   return (
     <div>
-      <div className="flex flex-wrap justify-between items-center gap-5 pb-4">
+      <div className="flex flex-wrap justify-between items-center gap-4 pb-4">
         <div className="flex flex-wrap items-end gap-3">
           {filteredColumns.map(
             (column) =>
@@ -225,10 +232,10 @@ export function DataTable<
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  onClick={() => handleRowClick(row)}
                   className={`hover:bg-[#f9f9f9] cursor-pointer  ${
                     row.getIsSelected() ? 'bg-[#f9f9f9]' : ''
                   }`}
-                  onClick={() => handleRowClick(row)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell className="px-3 py-2" key={cell.id}>

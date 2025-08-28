@@ -1,10 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { useNavigateToDetailsPage } from '@/hooks/useNavigateToDetailsPage';
-import { useTableRegistration } from '@/components/table/MultiTableExportButton';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -22,7 +20,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  Row,
 } from '@tanstack/react-table';
 
 import {
@@ -40,9 +37,11 @@ import {
 } from '@heroicons/react/24/solid';
 import { DataTableProps } from '@/types';
 import { TablePagination } from '@/components/table/TablePagination';
+import { useTableRegistration } from '@/components/table/MultiTableExportButton';
+import { useNavigateToDetailsPage } from '@/hooks/useNavigateToDetailsPage';
 
 export function DataTable<
-  TData extends { id: number; phoneNumber?: string; customerID?: string },
+  TData extends { id: number; phoneNumber?: string },
   TValue
 >({
   columns,
@@ -54,14 +53,16 @@ export function DataTable<
   columnFileName?: string;
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
   const navigateToDetails = useNavigateToDetailsPage<TData>();
 
-  const handleRowClick = (row: Row<TData>) => {
+  const handleRowClick = (row: any) => {
     navigateToDetails(row);
   };
 
@@ -82,24 +83,7 @@ export function DataTable<
       columnVisibility,
       rowSelection,
     },
-    meta: {
-      onRowClick: handleRowClick, // Use handleRowClick instead of navigateToDetails
-    },
   });
-
-  // Memoize selected rows to prevent infinite re-renders
-  const selectedTableRows = useMemo(
-    () => table.getSelectedRowModel().rows.map((row) => row.original),
-    [rowSelection]
-  );
-
-  // Register this table with the export context
-  useTableRegistration(
-    columnFileName || 'Applications',
-    data,
-    selectedTableRows, // Use memoized value
-    selectedTableRows.length
-  );
 
   const filteredColumns = [...table.getAllColumns()];
   if (filteredColumns.length > 1) {
@@ -111,9 +95,27 @@ export function DataTable<
     filteredColumns[0]?.id || ''
   );
 
+  // Get selected rows for table registration
+  const selectedRows = React.useMemo(
+    () => table.getSelectedRowModel().rows.map((row) => row.original),
+    [table.getSelectedRowModel().rows]
+  );
+  const selectedCount = React.useMemo(
+    () => selectedRows.length,
+    [selectedRows]
+  );
+
+  // Register table with MultiTableExportButton system
+  useTableRegistration(
+    'Loan Top Up Requests',
+    data,
+    selectedRows,
+    selectedCount
+  );
+
   return (
     <div>
-      <div className="flex flex-wrap justify-between items-center gap-5 pb-4">
+      <div className="flex flex-wrap justify-between items-center gap-4 pb-4">
         <div className="flex flex-wrap items-end gap-3">
           {filteredColumns.map(
             (column) =>
