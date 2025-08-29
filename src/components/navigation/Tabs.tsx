@@ -8,10 +8,10 @@ const TabHeader = ({ label, url, isActive, onClick }: TabHeaderProps) => {
   return (
     <Link
       href={url ?? ''}
-      className={`px-1.5 py-1 border-b-2 uppercase text-sm hover:border-secondary-100 ${
+      className={`px-1.5 py-1 border-b-2 uppercase text-sm hover:border-secondary-200 ${
         isActive
           ? 'border-secondary-200 text-secondary-200 font-medium'
-          : 'border-transparent text-gray-300 font-normal'
+          : 'border-transparent text-gray-400 font-normal'
       }`}
       onClick={onClick}
     >
@@ -27,7 +27,7 @@ export const TabComponent = ({ pageTitle, tabs }: TabComponentProps) => {
     <>
       <div className="flex flex-col gap-4 overflow-x-hidden">
         {pageTitle && <p className="font-medium uppercase">{pageTitle}</p>}
-        <div className="flex gap-3.5 border-b border-b-gray-50 overflow-x-auto whitespace-nowrap scrollbar-hide">
+        <div className="flex gap-3.5 border-b border-b-gray-100 overflow-x-auto whitespace-nowrap scrollbar-hide">
           {tabs.map((tab, index) => (
             <TabHeader
               key={index}

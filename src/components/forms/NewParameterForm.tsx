@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/general/Button';
 import Select from './Select';
-import { AuthService, API_CONFIG } from '@/services/authService';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
@@ -73,7 +72,8 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
       setIsSubmitting(true);
       setError(null);
 
-      const currentUser = AuthService.getCurrentUser();
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
       let value = '';
       let value2 = '0';
@@ -96,6 +96,7 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
           break;
       }
 
+      // Create dummy parameter object (would normally be sent to API)
       const newParameter = {
         name: data.name,
         value: value,
@@ -104,32 +105,19 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
           data.inputType === 'date' || data.inputType === 'date range'
             ? 'date'
             : 'decimal',
-        createdBy: currentUser?.email || '',
-        lastModifiedBy: currentUser?.email || '',
+        createdBy: 'admin@example.com',
+        lastModifiedBy: 'admin@example.com',
         label: data.labelOne || '',
         label2: data.labelTwo || '',
-        status: '',
+        status: 'Active',
+        id: Math.floor(Math.random() * 10000), // Generate dummy ID
+        createDate: new Date().toISOString(),
+        lastModified: new Date().toISOString(),
       };
 
-      const headers = await AuthService.getAuthHeaders();
-      headers.append('Accept', 'text/plain');
-      headers.append('Content-Type', 'application/json');
+      console.log('New parameter created (dummy):', newParameter);
 
-      const response = await fetch(
-        `${API_CONFIG.baseUrl}/api/V2/SystemParameter/createSystemParameter`,
-        {
-          method: 'POST',
-          headers,
-          body: JSON.stringify(newParameter),
-          redirect: 'follow',
-        }
-      );
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || 'Failed to create parameter');
-      }
-
+      // Simulate successful creation
       if (onSuccess) {
         onSuccess();
       }
@@ -154,7 +142,7 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
           <p className="text-lg font-medium text-gray-800">
             Add System Parameter
           </p>
-          <hr className="border-gray-50 mt-2" />
+          <hr className="border-gray-100 mt-2" />
         </div>
 
         <div className="flex flex-col gap-y-1.5">
@@ -163,7 +151,7 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
             <input
               type="text"
               placeholder="Parameter name"
-              className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+              className="input-style"
               {...register('name', { required: 'Parameter name is required' })}
             />
             {errors?.name && (
@@ -179,7 +167,7 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
           <div className="w-full">
             <textarea
               rows={3}
-              className="rounded-md border border-gray-100 w-full p-3 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+              className="rounded-md border border-gray-100 w-full p-3 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-0 focus:border-2 focus:border-secondary-200/60"
               placeholder="Enter a description"
               {...register('description')}
             ></textarea>
@@ -209,7 +197,7 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
               <input
                 type="text"
                 placeholder="Enter label"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('labelOne')}
               />
             </div>
@@ -218,7 +206,7 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
               <input
                 type="text"
                 placeholder="Enter value"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('value', { required: 'Value is required' })}
               />
               {errors?.value && (
@@ -250,7 +238,7 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
               <input
                 type="text"
                 placeholder="Enter first label"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('labelOne')}
               />
             </div>
@@ -259,7 +247,7 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
               <input
                 type="text"
                 placeholder="Enter first value"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('valueOne', {
                   required: 'First value is required',
                 })}
@@ -275,7 +263,7 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
               <input
                 type="text"
                 placeholder="Enter second label"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('labelTwo')}
               />
             </div>
@@ -284,7 +272,7 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
               <input
                 type="text"
                 placeholder="Enter second value"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 placeholder:text-[#9a9a9a] text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('valueTwo', {
                   required: 'Second value is required',
                 })}
@@ -317,7 +305,7 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
               <p className="text-[13px] text-gray-500">Date</p>
               <input
                 type="date"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('value', { required: 'Date is required' })}
               />
               {errors?.value && (
@@ -335,7 +323,7 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
               <p className="text-[13px] text-gray-500">Start Date</p>
               <input
                 type="date"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('valueOne', {
                   required: 'Start date is required',
                 })}
@@ -350,7 +338,7 @@ const NewParameterForm: React.FC<NewParameterFormProps> = ({
               <p className="text-[13px] text-gray-500">End Date</p>
               <input
                 type="date"
-                className="rounded-md border border-gray-100 w-full px-3 h-10 text-sm text-gray-700 outline-2 outline-secondary-200"
+                className="input-style"
                 {...register('valueTwo', { required: 'End date is required' })}
               />
               {errors?.valueTwo && (
