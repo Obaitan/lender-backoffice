@@ -2,15 +2,11 @@
 
 import { ReactNode, useState, useEffect } from 'react';
 import TabsWithMetrics from '@/components/navigation/TabsWithMetrics';
-import {
-  ExportProvider,
-  useExportContext,
-} from '@/components/table/MultiTableExportButton';
+import { ExportProvider } from '@/components/table/MultiTableExportButton';
 import { PeriodFilterContext } from '@/contexts/PeriodFilterContext';
 
 // Inner component that uses the export context
 function RequestsLayoutInner({ children }: { children: ReactNode }) {
-  const { registerTable } = useExportContext();
   const [appliedRange, setAppliedRange] = useState<{ from?: Date; to?: Date }>(
     {}
   );
