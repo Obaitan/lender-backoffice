@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Bars3CenterLeftIcon } from '@heroicons/react/24/solid';
-import { Bell, BellRing } from 'lucide-react';
-import { dummyUser, getDummyUser } from '@/utils/dummyUser';
+import { BellRing } from 'lucide-react';
+import { dummyUser } from '@/utils/dummyUser';
 
 const HeaderComponent = ({ openSidebar }: { openSidebar?: () => void }) => {
   // Generate initials for the avatar, combining first and last name initials
@@ -17,8 +17,6 @@ const HeaderComponent = ({ openSidebar }: { openSidebar?: () => void }) => {
     if (!dummyUser) return 'Loading...';
     return `${dummyUser.firstName} ${dummyUser.lastName}`;
   };
-
-  const unreadCount = 1;
 
   return (
     <div className="bg-white h-16 shadow xl:shadow-sm fixed top-0 left-0 xl:left-[221px] right-0 z-50 flex items-center px-6 xl:rounded-sm">
@@ -40,7 +38,7 @@ const HeaderComponent = ({ openSidebar }: { openSidebar?: () => void }) => {
             className="bg-[#f9f9f9] w-9 h-9 rounded-full border border-gray-200 flex justify-center items-center hover:bg-secondary-50 relative cursor-pointer"
           >
             <span className="absolute -top-0.5 -right-1.5 flex items-center justify-center bg-error-300 font-semibold text-[10px] text-white h-4 w-4 rounded-full">
-              2
+              3
             </span>
             <BellRing className="w-6 h-6 text-secondary-200/60" />
           </Link>

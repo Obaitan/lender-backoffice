@@ -119,14 +119,7 @@ export const useTableRegistration = (
     return () => {
       unregisterTable(tableName);
     };
-  }, [
-    tableName,
-    allData,
-    selectedData,
-    selectedCount,
-    registerTable,
-    unregisterTable,
-  ]);
+  }, [tableName, allData, selectedData, selectedCount]);
 };
 
 // Main export button component

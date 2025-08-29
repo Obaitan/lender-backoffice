@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import {
   DropdownMenu,
@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
 import {
+  ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
@@ -35,34 +36,53 @@ import {
   ViewColumnsIcon,
   XMarkIcon,
 } from '@heroicons/react/24/solid';
-import { DataTableProps } from '@/types';
 import { TablePagination } from '@/components/table/TablePagination';
-import { useNavigateToDetailsPage } from '@/hooks/useNavigateToDetailsPage';
-import { useTableRegistration } from '@/components/table/MultiTableExportButton';
+import { FormattedLoanData } from '@/types';
+import SideModal from '@/components/layout/SideModal';
+import LoanDetailsComponent from './LoanDetails';
 
-export function DataTable<
-  TData extends { id: number; phoneNumber?: string },
-  TValue
->({
+interface DataTableProps {
+  columns: ColumnDef<FormattedLoanData>[] | ((onRowEdit: (data: FormattedLoanData) => void) => ColumnDef<FormattedLoanData>[]);
+  data: FormattedLoanData[];
+  emptyMessage?: string;
+  columnFileName?: string;
+}
+
+export function DataTable({
   columns,
   data,
-  columnFileName,
   emptyMessage = 'No records to display.',
-}: DataTableProps<TData, TValue> & {
-  columnFileName?: string;
-  emptyMessage?: string;
-}) {
+  columnFileName,
+}: DataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [rowSelection, setRowSelection] = useState({});
+  
+  // Add edit modal state
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingRowData, setEditingRowData] = useState<FormattedLoanData | null>(null);
 
-  const navigateToDetails = useNavigateToDetailsPage<TData>();
+  // Handle row edit
+  const handleRowEdit = (rowData: FormattedLoanData) => {
+    setEditingRowData(rowData);
+    setIsEditModalOpen(true);
+  };
+
+  // Handle row click - single function that handles both row selection and modal opening
+  const handleRowClick = (row: any) => {
+    handleRowEdit(row.original);
+  };
+
+  // Use createColumns if available, otherwise use regular columns
+  const tableColumns = typeof columns === 'function' 
+    ? columns(handleRowEdit) 
+    : columns;
 
   const table = useReactTable({
     data,
-    columns,
+    columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -77,9 +97,6 @@ export function DataTable<
       columnVisibility,
       rowSelection,
     },
-    meta: {
-      onRowClick: navigateToDetails,
-    },
   });
 
   const filteredColumns = [...table.getAllColumns()];
@@ -92,37 +109,9 @@ export function DataTable<
     filteredColumns[0]?.id || ''
   );
 
-  // Get selected rows - MEMOIZED to prevent infinite re-renders
-  const selectedRows = useMemo(
-    () => table.getSelectedRowModel().rows.map((row) => row.original),
-    [table.getSelectedRowModel().rows]
-  );
-  const selectedCount = useMemo(
-    () => selectedRows.length,
-    [selectedRows]
-  );
-
-  // Get table name from the column file name prop
-  let tableName = 'ready-to-disburse';
-  if (columnFileName) {
-    tableName = columnFileName
-      .replace(/Columns?$/, '')
-      .replace(/([a-z])([A-Z])/g, '$1-$2')
-      .replace(/_/g, '-')
-      .toLowerCase();
-  }
-
-  // Register this table for export
-  useTableRegistration(
-    tableName,
-    data as Record<string, unknown>[],
-    selectedRows as Record<string, unknown>[],
-    selectedCount
-  );
-
   return (
     <div>
-      <div className="flex flex-wrap justify-between items-center gap-5 pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-4">
         <div className="flex flex-wrap items-end gap-3">
           {filteredColumns.map(
             (column) =>
@@ -174,33 +163,34 @@ export function DataTable<
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="bg-white border text-secondary-200 border-secondary-200 rounded p-1.5 ml-auto hover:text-white hover:bg-secondary-200 outline-none">
-              <ViewColumnsIcon className="h-6 w-6" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize text-gray-700"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center gap-3">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="bg-white border text-secondary-200 border-secondary-200 rounded p-1.5 hover:text-white hover:bg-secondary-200 outline-none">
+                <ViewColumnsIcon className="h-6 w-6" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize text-gray-700"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       <div className="rounded border">
@@ -232,8 +222,8 @@ export function DataTable<
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
-                  onClick={() => navigateToDetails(row)}
-                  className="cursor-pointer"
+                  onClick={() => handleRowClick(row)}
+                  className="cursor-pointer hover:bg-gray-50"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell className="px-3 py-2" key={cell.id}>
@@ -248,7 +238,7 @@ export function DataTable<
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={tableColumns.length}
                   className="h-24 text-center"
                 >
                   <div className="text-center py-6">
@@ -260,7 +250,7 @@ export function DataTable<
                       priority
                       className="w-32 mx-auto"
                     />
-                    <p className="mt-2">{emptyMessage}</p>
+                    <p className="mt-2 text-gray-500">{emptyMessage}</p>
                   </div>
                 </TableCell>
               </TableRow>
@@ -269,6 +259,16 @@ export function DataTable<
         </Table>
       </div>
       <TablePagination table={table} />
+      
+      {/* Add edit modal */}
+      {isEditModalOpen && (
+        <SideModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+        >
+          <LoanDetailsComponent loan={editingRowData!} />
+        </SideModal>
+      )}
     </div>
   );
 }
