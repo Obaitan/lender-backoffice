@@ -1,11 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@/components/general/Button';
 import { useForm } from 'react-hook-form';
 import validator from 'validator';
 import Select from '../forms/Select';
-import { Loader2 } from 'lucide-react';
 
 interface AddCustomerFormProps {
   onClose?: () => void;
@@ -29,17 +27,12 @@ interface CustomerFormInputs {
   landMark: string;
 }
 
-const AddCustomerForm: React.FC<AddCustomerFormProps> = ({
-  onCustomerCreated,
-}) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+const AddCustomerForm: React.FC<AddCustomerFormProps> = () => {
   const {
     register,
     handleSubmit,
     setValue,
     watch,
-    reset,
     formState: { errors },
   } = useForm<CustomerFormInputs>({
     defaultValues: {
@@ -363,17 +356,9 @@ const AddCustomerForm: React.FC<AddCustomerFormProps> = ({
         <div className="flex justify-end mt-4 w-full">
           <Button
             type="submit"
-            disabled={isSubmitting}
             className="bg-secondary-200 flex justify-center items-center !text-sm !h-9 !w-fit !px-5"
           >
-            {isSubmitting ? (
-              <div className="flex items-center gap-2">
-                <Loader2 className="animate-spin w-6 h-6 text-white" />
-                <span>Creating...</span>
-              </div>
-            ) : (
-              'Create Customer'
-            )}
+            Create Customer
           </Button>
         </div>
       </div>

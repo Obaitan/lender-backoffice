@@ -51,7 +51,6 @@ interface RecoveredDebtsDataTableProps {
 export function DataTable({
   columns,
   data,
-  columnFileName,
   emptyMessage = 'No recovered payments found.',
 }: RecoveredDebtsDataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -60,7 +59,8 @@ export function DataTable({
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedRecoveryData, setSelectedRecoveryData] = useState<RecoveredPayment | null>(null);
+  const [selectedRecoveryData, setSelectedRecoveryData] =
+    useState<RecoveredPayment | null>(null);
 
   const handleRowEdit = (recoveryData: RecoveredPayment) => {
     setSelectedRecoveryData(recoveryData);

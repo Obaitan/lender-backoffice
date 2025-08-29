@@ -35,11 +35,9 @@ export default function CustomerDisburseFunds({
   const [isDisburseModalOpen, setIsDisburseModalOpen] = useState(false);
   const { user } = useAuth();
 
-  // Get user role code - handle both possible locations
-  const userRoleCode = typeof user?.role === 'object' && user?.role !== null 
-    ? (user.role as { roleCode: string }).roleCode 
-    : user?.roleCode || undefined;
-
+  // Get user role code - use roleCode directly since there's no nested role object
+  const userRoleCode = user?.roleCode || undefined;
+  
   // Check if user role is SSO or ADM
   const isSSOorADM = userRoleCode === 'SSO' || userRoleCode === 'ADM';
   

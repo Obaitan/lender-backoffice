@@ -99,7 +99,7 @@ export function DataTable<TData extends Record<string, unknown>, TValue>({
 
   const table = useReactTable({
     data,
-    columns: columns as any,
+    columns: columns as import('@tanstack/react-table').ColumnDef<TData, TValue>[],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,

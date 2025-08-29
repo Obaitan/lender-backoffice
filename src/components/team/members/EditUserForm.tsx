@@ -25,7 +25,11 @@ interface FormInputs {
   transferFromPerson: string;
 }
 
-const EditUserForm: React.FC<EditUserFormProps> = ({ userData, closeForm, onUserUpdated }) => {
+const EditUserForm: React.FC<EditUserFormProps> = ({
+  userData,
+  closeForm,
+  onUserUpdated,
+}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Static dummy data for dropdowns
@@ -35,7 +39,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userData, closeForm, onUser
     { value: 'SUP', label: 'Supervisor' },
     { value: 'AGT', label: 'Agent' },
     { value: 'CRO', label: 'Credit Officer' },
-    { value: 'CAM', label: 'Credit Analyst Manager' }
+    { value: 'CAM', label: 'Credit Analyst Manager' },
   ];
 
   const supervisors = [
@@ -43,7 +47,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userData, closeForm, onUser
     { value: 'RM002', label: 'Sarah Okafor (AGT)' },
     { value: 'RM003', label: 'Michael Eze (SUP)' },
     { value: 'RM004', label: 'Grace Nwosu (AGT)' },
-    { value: 'RM005', label: 'David Okoro (ADM)' }
+    { value: 'RM005', label: 'David Okoro (ADM)' },
   ];
 
   const {
@@ -62,28 +66,22 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ userData, closeForm, onUser
       status: userData?.status || '',
       supervisor: userData?.superiorOfficer || '',
       rmCode: userData?.rmCode || '',
-      transferFromPerson: ''
-    }
+      transferFromPerson: '',
+    },
   });
 
-  const normalizeStatus = (status: string | undefined): string => {
-    if (!status) return '';
-    const lowerCaseStatus = status.toLowerCase();
-    return lowerCaseStatus.charAt(0).toUpperCase() + lowerCaseStatus.slice(1);
-  };
-
-  const onSubmit = async (data: FormInputs) => {
+  const onSubmit = async () => {
     setIsSubmitting(true);
-    
+
     // Simulate form submission
     setTimeout(() => {
       toast.success('User updated successfully (Demo Mode)');
       setIsSubmitting(false);
-      
+
       if (onUserUpdated) {
         onUserUpdated();
       }
-      
+
       if (closeForm) {
         closeForm();
       }

@@ -1,13 +1,11 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
 import CustomerDocuments from '@/app/(app)/customer-information/[rowID]/CustomerDocuments';
 import CustomerProfilePicture from '@/app/(app)/customer-information/[rowID]/CustomerProfilePicture';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Customer, FinancialData, EmploymentData } from '@/types';
 import { formatDate, maskMiddleDigits } from '@/utils/functions';
 import FieldVerificationStatus from './FieldVerificationStatus';
-import { toast } from 'react-toastify';
 
 export default function GeneralInfo({
   phoneNumber,
@@ -20,83 +18,11 @@ export default function GeneralInfo({
   financialData: FinancialData | null;
   employmentData: EmploymentData | null;
 }) {
-  const [isVerifying, setIsVerifying] = useState(false);
-  // Calculate verification data from customer data
-  const calculateVerificationData = useCallback(() => {
-    const verificationFields = [
-      {
-        field: 'firstName',
-        verified: customerData?.firstNameVerified,
-        label: 'First Name',
-      },
-      {
-        field: 'lastName',
-        verified: customerData?.lastNameVerified,
-        label: 'Last Name',
-      },
-      {
-        field: 'phoneNumber',
-        verified: customerData?.phoneNumberVerified,
-        label: 'Phone Number',
-      },
-      { field: 'email', verified: customerData?.emailVerified, label: 'Email' },
-      {
-        field: 'gender',
-        verified: customerData?.genderVerified,
-        label: 'Gender',
-      },
-      {
-        field: 'dateOfBirth',
-        verified: customerData?.dateOfBirthVerified,
-        label: 'Date of Birth',
-      },
-      {
-        field: 'maritalStatus',
-        verified: customerData?.maritalStatusVerified,
-        label: 'Marital Status',
-      },
-      { field: 'nin', verified: financialData?.ninVerified, label: 'NIN' },
-      { field: 'bvn', verified: financialData?.bvnVerified, label: 'BVN' },
-      {
-        field: 'accountNumber',
-        verified: financialData?.accountNumberVerified,
-        label: 'Account Number',
-      },
-    ];
-
-    const issues = verificationFields
-      .filter((field) => field.verified === false)
-      .map((field) => ({
-        field: field.label,
-        message: `${field.label} verification failed`,
-      }));
-
-    const verifiedCount = verificationFields.filter(
-      (field) => field.verified === true
-    ).length;
-    const totalFields = verificationFields.length;
-
-    return {
-      issues,
-      verifiedFields: verifiedCount,
-      totalFields,
-    };
-  }, [customerData, financialData]);
-
-  const [verificationData, setVerificationData] = useState(
-    calculateVerificationData()
-  );
-
-  // Update verification data when customer data changes
-  useEffect(() => {
-    setVerificationData(calculateVerificationData());
-  }, [customerData, financialData]);
-
   // Get field verification status from customer data
   const getFieldVerificationStatus = (
     field: string,
     value: string | number | null | undefined
-): 'verified' | 'failed' | 'pending' | 'not_available' => {
+  ): 'verified' | 'failed' | 'pending' | 'not_available' => {
     if (!value || value === 'No data') return 'not_available';
 
     // Map field names to verification status from customer data
@@ -118,38 +44,6 @@ export default function GeneralInfo({
     if (isVerified === true) return 'verified';
     if (isVerified === false) return 'failed';
     return 'pending';
-  };
-
-  const handleVerify = async () => {
-    if (!financialData?.bvn) {
-      toast.error('BVN is required for verification');
-      return;
-    }
-
-    setIsVerifying(true);
-
-    try {
-      // Prepare customer data for verification
-      const customerInfo = {
-        customerId: customerData?.id,
-        customerID: customerData?.customerID,
-        firstName: customerData?.firstName,
-        lastName: customerData?.lastName,
-        dateOfBirth: customerData?.dateOfBirth,
-        phoneNumber: phoneNumber,
-        email: customerData?.email,
-        gender: customerData?.gender,
-        maritalStatus: customerData?.maritalStatus,
-        financialData: financialData,
-      };
-      // Optionally refresh the verification data display
-      setVerificationData(calculateVerificationData());
-    } catch (error) {
-      console.error('Verification error:', error);
-      toast.error('Verification failed. Please try again.');
-    } finally {
-      setIsVerifying(false);
-    }
   };
 
   return (
@@ -264,7 +158,6 @@ export default function GeneralInfo({
             phoneNumber={phoneNumber}
             className="!w-16 !h-16 !rounded"
             selfie={true}
-            bvn={financialData?.bvn}
           />
           <CustomerDocuments phoneNumber={phoneNumber} />
         </div>
@@ -277,7 +170,10 @@ export default function GeneralInfo({
           <FieldVerificationStatus
             label="Employer"
             value={employmentData?.employer}
-            status={getFieldVerificationStatus('employer', employmentData?.employer)}
+            status={getFieldVerificationStatus(
+              'employer',
+              employmentData?.employer
+            )}
           />
           <FieldVerificationStatus
             label="Monthly Salary"
@@ -286,12 +182,18 @@ export default function GeneralInfo({
                 ? `₦ ${employmentData.salary.toLocaleString('en-US')}`
                 : null
             }
-            status={getFieldVerificationStatus('salary', employmentData?.salary)}
+            status={getFieldVerificationStatus(
+              'salary',
+              employmentData?.salary
+            )}
           />
           <FieldVerificationStatus
             label="Employer Address"
             value={employmentData?.employerAddress}
-            status={getFieldVerificationStatus('employerAddress', employmentData?.employerAddress)}
+            status={getFieldVerificationStatus(
+              'employerAddress',
+              employmentData?.employerAddress
+            )}
             className="col-span-full lg:col-span-1"
           />
         </div>

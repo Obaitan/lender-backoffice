@@ -90,7 +90,7 @@ export function DataTable<
   // Memoize selected rows to prevent infinite re-renders
   const selectedTableRows = useMemo(
     () => table.getSelectedRowModel().rows.map((row) => row.original),
-    [rowSelection]
+    [table]
   );
 
   // Register this table with the export context

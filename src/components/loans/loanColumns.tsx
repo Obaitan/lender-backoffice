@@ -21,7 +21,7 @@ interface ActionsCellProps {
   onRowEdit?: (rowData: FormattedLoanData) => void;
 }
 
-const ActionsCell = ({ row, onRowEdit }: ActionsCellProps) => {
+const ActionsCell = ({ row }: ActionsCellProps) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const loanData = row.original;
 
@@ -62,7 +62,9 @@ const ActionsCell = ({ row, onRowEdit }: ActionsCellProps) => {
   );
 };
 
-export const createColumns = (onRowEdit?: (rowData: FormattedLoanData) => void): ColumnDef<FormattedLoanData>[] => [
+export const createColumns = (
+  onRowEdit?: (rowData: FormattedLoanData) => void
+): ColumnDef<FormattedLoanData>[] => [
   {
     id: 'select',
     header: ({ table }) => (

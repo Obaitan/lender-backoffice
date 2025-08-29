@@ -20,7 +20,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
+  useReactTable, Row
 } from '@tanstack/react-table';
 
 import {
@@ -66,7 +66,6 @@ export function DataTable({
   columns,
   data,
   emptyMessage = 'No records to display.',
-  columnFileName,
 }: DataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -98,7 +97,7 @@ export function DataTable({
   };
 
   // Handle row click
-  const handleRowClick = (row: any) => {
+  const handleRowClick = (row: Row<LogData>) => {
     handleRowEdit(row.original);
   };
 
@@ -137,16 +136,11 @@ export function DataTable({
     filteredColumns[0]?.id || ''
   );
 
-  // Get selected rows
-  const selectedRows = table
-    .getSelectedRowModel()
-    .rows.map((row) => row.original);
-  const selectedCount = selectedRows.length;
-
   // Memoize selected rows to prevent infinite re-renders
+  const selectedRowModel = table.getSelectedRowModel();
   const selectedTableRows = useMemo(
-    () => table.getSelectedRowModel().rows.map((row) => row.original),
-    [table.getSelectedRowModel().rows]
+    () => selectedRowModel.rows.map((row) => row.original),
+    [selectedRowModel.rows]
   );
 
   // Register this table with the export context - ExportButton functionality preserved

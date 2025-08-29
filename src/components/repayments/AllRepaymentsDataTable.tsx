@@ -50,7 +50,6 @@ export function AllRepaymentsDataTable({
   columns,
   data,
   emptyMessage = 'No records to display.',
-  columnFileName,
 }: AllRepaymentsDataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

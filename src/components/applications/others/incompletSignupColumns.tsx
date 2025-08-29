@@ -64,7 +64,6 @@ export const columns: ColumnDef<CustomerTable>[] = [
         onClick={(e) => e.stopPropagation()}
         aria-label="Select row"
         className="border-gray-300 z-30"
-        onClick={(e) => e.stopPropagation()}
       />
     ),
     enableSorting: false,

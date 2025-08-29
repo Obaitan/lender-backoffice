@@ -208,9 +208,7 @@ export const dummySystemParameters: SystemParameter[] = [
 ];
 
 // Helper functions to get dummy data
-export const getDummyActivityHistory = (
-  customerID: string
-): ExtendedActivityItem[] => {
+export const getDummyActivityHistory = (): ExtendedActivityItem[] => {
   // Return all activities for demo purposes, in real scenario filter by customerID
   return dummyActivityHistory;
 };
@@ -241,8 +239,12 @@ export const getDummyLoanTenureOptions = (): number[] => {
 
 // Mock API response functions
 export const mockCreateActivity = async (
-  activityData: any
-): Promise<{ success: boolean; data?: any; error?: string }> => {
+  activityData: ExtendedActivityItem
+): Promise<{
+  success: boolean;
+  data?: ExtendedActivityItem;
+  error?: string;
+}> => {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -250,16 +252,20 @@ export const mockCreateActivity = async (
   return {
     success: true,
     data: {
-      id: `ACT-${Date.now()}`,
       ...activityData,
+      id: `ACT-${Date.now()}`,
       createdDate: new Date().toISOString(),
     },
   };
 };
 
 export const mockUpdateLoanWorkflow = async (
-  loanData: any
-): Promise<{ success: boolean; data?: any; error?: string }> => {
+  loanData: LoanDetails
+): Promise<{
+  success: boolean;
+  data?: LoanDetails & { lastModified: string };
+  error?: string;
+}> => {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 1500));
 
@@ -273,9 +279,11 @@ export const mockUpdateLoanWorkflow = async (
   };
 };
 
-export const mockFileUpload = async (
-  fileData: FormData
-): Promise<{ success: boolean; data?: any; error?: string }> => {
+export const mockFileUpload = async (): Promise<{
+  success: boolean;
+  data?: ActivityAttachment;
+  error?: string;
+}> => {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -283,9 +291,10 @@ export const mockFileUpload = async (
   return {
     success: true,
     data: {
-      id: `ATT-${Date.now()}`,
+      id: `FILE-${Date.now()}`,
       fileName: 'uploaded_file.pdf',
       fileUrl: '/docs/uploaded_file.pdf',
+      fileSize: 256000,
       uploadDate: new Date().toISOString(),
     },
   };

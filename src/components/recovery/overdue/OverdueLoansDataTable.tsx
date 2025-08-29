@@ -51,7 +51,6 @@ interface DataTableProps {
 export function DataTable({
   columns,
   data,
-  columnFileName,
   emptyMessage = 'No overdue payments found.',
 }: DataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -60,7 +59,9 @@ export function DataTable({
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedLoanData, setSelectedLoanData] = useState<OverdueLoan | null>(null);
+  const [selectedLoanData, setSelectedLoanData] = useState<OverdueLoan | null>(
+    null
+  );
 
   const handleRowEdit = (loanData: OverdueLoan) => {
     setSelectedLoanData(loanData);

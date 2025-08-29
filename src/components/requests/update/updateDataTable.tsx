@@ -49,7 +49,6 @@ export function DataTable<
   columns,
   data,
   emptyMessage = 'No records to display.',
-  columnFileName,
 }: DataTableProps<TData, TValue> & {
   emptyMessage?: string;
   columnFileName?: string;
@@ -73,7 +72,7 @@ export function DataTable<
 
   const table = useReactTable({
     data,
-    columns: tableColumns as import('@tanstack/react-table').ColumnDef<TData, any>[],
+    columns: tableColumns as import('@tanstack/react-table').ColumnDef<TData, TValue>[],
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -101,9 +100,10 @@ export function DataTable<
   );
 
   // Get selected rows for table registration
+  const selectedRowModel = table.getSelectedRowModel();
   const selectedRows = React.useMemo(
-    () => table.getSelectedRowModel().rows.map((row) => row.original),
-    [table.getSelectedRowModel().rows]
+    () => selectedRowModel.rows.map((row) => row.original),
+    [selectedRowModel.rows]
   );
   const selectedCount = React.useMemo(
     () => selectedRows.length,

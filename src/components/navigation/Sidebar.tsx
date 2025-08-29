@@ -2,13 +2,11 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { NavLinkProps } from '@/types';
 import {
   ArrowLeftStartOnRectangleIcon,
   BanknotesIcon,
-  BellAlertIcon,
   ChartBarIcon,
   ClipboardDocumentListIcon,
   Cog6ToothIcon,
@@ -21,13 +19,7 @@ import {
 } from '@heroicons/react/24/solid';
 import { Button } from '../general/Button';
 
-const NavLink = ({
-  label,
-  href,
-  icon,
-  visible = true,
-  moduleName,
-}: NavLinkProps) => {
+const NavLink = ({ label, href, icon }: NavLinkProps) => {
   const pathname = usePathname(); // Always call the hook at the top level
   const hrefPath = href.split('/')[1];
   const pathnamePath = pathname?.split('/')[1] || '';
@@ -114,7 +106,9 @@ export const Sidebar = () => {
 
   return (
     <div className="bg-white fixed z-20 inset-y-0 left-0 w-[215px] px-5 pt-5 shadow-sm overflow-y-auto">
-      <h2 className="text-xl font-bold text-secondary-200 uppercase px-4">Lender</h2>
+      <h2 className="text-xl font-bold text-secondary-200 uppercase px-4">
+        Lender
+      </h2>
       <hr className="mt-4 mb-6 border-gray-100" />
 
       <div className="flex flex-col min-h-[85%] justify-between">

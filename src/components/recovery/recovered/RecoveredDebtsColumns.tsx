@@ -37,7 +37,12 @@ export interface RecoveredPayment {
 }
 
 // ActionsCell for handling modal logic
-const ActionsCell = ({ row, onRowEdit }: { row: Row<RecoveredPayment>; onRowEdit: (data: RecoveredPayment) => void }) => {
+const ActionsCell = ({
+  row,
+}: {
+  row: Row<RecoveredPayment>;
+  onRowEdit: (data: RecoveredPayment) => void;
+}) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const recoveryData = row.original;
 
@@ -77,7 +82,9 @@ const ActionsCell = ({ row, onRowEdit }: { row: Row<RecoveredPayment>; onRowEdit
   );
 };
 
-export const createColumns = (onRowEdit: (data: RecoveredPayment) => void): ColumnDef<RecoveredPayment>[] => [
+export const createColumns = (
+  onRowEdit: (data: RecoveredPayment) => void
+): ColumnDef<RecoveredPayment>[] => [
   {
     id: 'select',
     header: ({ table }) => (

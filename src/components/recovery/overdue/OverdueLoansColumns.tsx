@@ -53,7 +53,7 @@ export interface OverdueLoan {
 }
 
 // ActionsCell for handling modal logic
-const ActionsCell = ({ row, onRowEdit }: { row: Row<OverdueLoan>; onRowEdit: (data: OverdueLoan) => void }) => {
+const ActionsCell = ({ row}: { row: Row<OverdueLoan>; onRowEdit: (data: OverdueLoan) => void }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const loanData = row.original;
 

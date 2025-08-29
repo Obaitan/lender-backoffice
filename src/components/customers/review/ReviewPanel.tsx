@@ -9,22 +9,26 @@ import Details from './Details';
 import ActivityHistory from './ActivityHistory';
 import { LoanResponse, SelectOption } from '@/types';
 
-// Define interface for reviewInfo props
-interface ReviewInfoProps {
-  loan?: string;
-  activity?: string;
-  customerID: string; // Now required
+// Define the props interface
+interface ReviewInfo {
+  loan: string;
+  activity: string;
+  customerID: string;
 }
 
-const ReviewPanel = ({ reviewInfo }: { reviewInfo: ReviewInfoProps }) => {
+interface ReviewPanelProps {
+  reviewInfo: ReviewInfo;
+}
+
+const ReviewPanel = ({ reviewInfo }: ReviewPanelProps) => {
   const [openPanel, setOpenPanel] = useState<boolean>(false);
-  const [loans, setLoans] = useState<SelectOption[]>([]);
-  const [loadedLoans, setLoadedLoans] = useState<LoanResponse[]>([]);
+  const [loans] = useState<SelectOption[]>([]);
+  const [loadedLoans] = useState<LoanResponse[]>([]);
   const [selectedLoan, setSelectedLoan] = useState<string>('');
   const [selectedLoanData, setSelectedLoanData] = useState<LoanResponse | null>(
     null
   );
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch loans when component mounts or reviewInfo changes

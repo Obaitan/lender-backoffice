@@ -8,9 +8,7 @@ import { formatDate } from '@/utils/functions';
 import { Loader2 } from 'lucide-react';
 
 // function to fetch activity history
-const fetchActivityHistory = async (
-  loanNumber: string
-): Promise<ActivityItem[]> => {
+const fetchActivityHistory = async (): Promise<ActivityItem[]> => {
   // Mock data
   return [
     {
@@ -60,7 +58,7 @@ const ActivityHistory = ({ loanNumber }: ActivityHistoryProps) => {
       setError(null);
 
       try {
-        const history = await fetchActivityHistory(loanNumber);
+        const history = await fetchActivityHistory();
         setActivities(history);
       } catch (err) {
         console.error('Error fetching activity history:', err);
@@ -72,18 +70,6 @@ const ActivityHistory = ({ loanNumber }: ActivityHistoryProps) => {
 
     getActivityHistory();
   }, [loanNumber]);
-
-  // Format date string to readable format
-  // const formatDate = (dateString: string): string => {
-  //   const date = new Date(dateString);
-  //   return date.toLocaleString('en-US', {
-  //     year: 'numeric',
-  //     month: 'short',
-  //     day: 'numeric',
-  //     hour: '2-digit',
-  //     minute: '2-digit',
-  //   });
-  // };
 
   if (isLoading) {
     return (

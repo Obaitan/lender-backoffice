@@ -20,7 +20,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
+  useReactTable, Row
 } from '@tanstack/react-table';
 
 import {
@@ -58,7 +58,7 @@ export function DataTable<
 
   const navigateToDetails = useNavigateToDetailsPage<TData>();
 
-  const handleRowClick = (row: any) => {
+  const handleRowClick = (row: Row<TData>) => {
     navigateToDetails(row);
   };
 

@@ -9,12 +9,10 @@ export default function CustomerProfilePicture({
   phoneNumber,
   className,
   selfie,
-  bvn,
 }: {
   phoneNumber: string;
   className?: string;
   selfie?: boolean;
-  bvn?: string;
 }) {
   const [customerPicture, setCustomerPicture] = useState<CustomerPicture | null>(null);
 

@@ -21,6 +21,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  Row,
 } from '@tanstack/react-table';
 
 import {
@@ -70,7 +71,7 @@ export function RepaymentsDataTable({
   };
 
   // Handle row click
-  const handleRowClick = (row: any) => {
+  const handleRowClick = (row: Row<Repayment>) => {
     handleRowEdit(row.original);
   };
 

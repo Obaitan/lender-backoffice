@@ -67,7 +67,7 @@ const AddUserForm: React.FC<AddUserFormProps> = ({ onUserCreated }) => {
     },
   });
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async () => {
     setIsSubmitting(true);
     
     // Simulate form submission

@@ -93,9 +93,10 @@ export function DataTable<
   );
 
   // Get selected rows - MEMOIZED to prevent infinite re-renders
+  const selectedRowModel = table.getSelectedRowModel();
   const selectedRows = useMemo(
-    () => table.getSelectedRowModel().rows.map((row) => row.original),
-    [table.getSelectedRowModel().rows]
+    () => selectedRowModel.rows.map((row) => row.original),
+    [selectedRowModel.rows]
   );
   const selectedCount = useMemo(
     () => selectedRows.length,

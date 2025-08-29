@@ -21,6 +21,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  Row,
 } from '@tanstack/react-table';
 
 import {
@@ -52,7 +53,6 @@ interface DataTableProps {
 export function DataTable({
   columns,
   data,
-  columnFileName,
   emptyMessage = 'No expected repayments found.',
 }: DataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -60,7 +60,7 @@ export function DataTable({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  
+
   // Edit modal state
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingRowData, setEditingRowData] = useState<Repayment | null>(null);
@@ -72,14 +72,15 @@ export function DataTable({
   };
 
   // Handle row click
-  const handleRowClick = (row: any) => {
+  const handleRowClick = (row: Row<Repayment>) => {
     handleRowEdit(row.original);
   };
 
   // Use createColumns if available, otherwise use provided columns
-  const tableColumns = typeof createColumns === 'function' 
-    ? createColumns(handleRowEdit) 
-    : columns;
+  const tableColumns =
+    typeof createColumns === 'function'
+      ? createColumns(handleRowEdit)
+      : columns;
 
   const table = useReactTable({
     data,
@@ -266,8 +267,8 @@ export function DataTable({
 
       {/* Edit Modal */}
       {isEditModalOpen && editingRowData && (
-        <SideModal 
-          isOpen={isEditModalOpen} 
+        <SideModal
+          isOpen={isEditModalOpen}
           onClose={() => {
             setIsEditModalOpen(false);
             setEditingRowData(null);

@@ -54,7 +54,6 @@ export function DataTable<TData extends Record<string, unknown>, TValue>({
   columns,
   data,
   onUserUpdated,
-  columnFileName,
   emptyMessage = 'No records to display.',
 }: TeamDataTableProps<TData, TValue> & { emptyMessage?: string }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -64,9 +63,7 @@ export function DataTable<TData extends Record<string, unknown>, TValue>({
   const [rowSelection, setRowSelection] = useState({});
   const [addUserModal, setAddUserModal] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [selectedUserData, setSelectedUserData] = useState<TeamMember | null>(
-    null
-  );
+  const [selectedUserData] = useState<TeamMember | null>(null);
 
   const openUserModal = () => {
     setAddUserModal(true);
@@ -106,23 +103,6 @@ export function DataTable<TData extends Record<string, unknown>, TValue>({
   const [selectedFilter, setSelectedFilter] = useState(
     filteredColumns[0]?.id || ''
   );
-
-  // Get selected rows
-  const selectedRows = table
-    .getSelectedRowModel()
-    .rows.map((row) => row.original);
-  const selectedCount = selectedRows.length;
-
-  // Get table name from the column file name prop
-  let tableName = 'team-table-export.csv';
-  if (columnFileName) {
-    tableName =
-      columnFileName
-        .replace(/Columns?$/, '')
-        .replace(/([a-z])([A-Z])/g, '$1-$2')
-        .replace(/_/g, '-')
-        .toLowerCase() + '.csv';
-  }
 
   return (
     <div>
@@ -250,9 +230,6 @@ export function DataTable<TData extends Record<string, unknown>, TValue>({
                   rowData &&
                   'status' in rowData
                 ) {
-                  const isInactive =
-                    rowData.status &&
-                    String(rowData.status).toLowerCase() === 'inactive';
                   return (
                     <TableRow
                       key={row.id}

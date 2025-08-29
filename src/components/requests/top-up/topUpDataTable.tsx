@@ -19,7 +19,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
+  useReactTable, Row
 } from '@tanstack/react-table';
 
 import {
@@ -47,7 +47,7 @@ export function DataTable<
   columns,
   data,
   emptyMessage = 'No records to display.',
-  columnFileName,
+ 
 }: DataTableProps<TData, TValue> & {
   emptyMessage?: string;
   columnFileName?: string;
@@ -62,7 +62,7 @@ export function DataTable<
 
   const navigateToDetails = useNavigateToDetailsPage<TData>();
 
-  const handleRowClick = (row: any) => {
+  const handleRowClick = (row: Row<TData>) => {
     navigateToDetails(row);
   };
 
@@ -98,7 +98,7 @@ export function DataTable<
   // Get selected rows for table registration
   const selectedRows = React.useMemo(
     () => table.getSelectedRowModel().rows.map((row) => row.original),
-    [table.getSelectedRowModel().rows]
+    [table]
   );
   const selectedCount = React.useMemo(
     () => selectedRows.length,

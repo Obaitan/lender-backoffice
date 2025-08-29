@@ -20,7 +20,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
+  useReactTable, Row
 } from '@tanstack/react-table';
 
 import {
@@ -52,7 +52,6 @@ export function DataTable({
   columns,
   data,
   emptyMessage = 'No records to display.',
-  columnFileName,
 }: DataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -71,7 +70,7 @@ export function DataTable({
   };
 
   // Handle row click - single function that handles both row selection and modal opening
-  const handleRowClick = (row: any) => {
+  const handleRowClick = (row: Row<FormattedLoanData>) => {
     handleRowEdit(row.original);
   };
 

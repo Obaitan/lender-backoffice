@@ -19,13 +19,13 @@ interface ActionsCellProps {
   onRowEdit?: (row: Row<CustomerRequest>) => void;
 }
 
-const ActionsCell = ({ row, onRowEdit }: ActionsCellProps) => {
+const ActionsCell = ({ row }: ActionsCellProps) => {
   const navigateToDetails = useNavigateToDetailsPage<CustomerRequest>();
-  
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button 
+        <button
           className="h-8 w-8 flex justify-center items-center rounded-full hover:bg-background outline-none"
           onClick={(e) => e.stopPropagation()}
         >
@@ -48,7 +48,9 @@ const ActionsCell = ({ row, onRowEdit }: ActionsCellProps) => {
   );
 };
 
-export const createColumns = (onRowEdit?: (row: Row<CustomerRequest>) => void): ColumnDef<CustomerRequest>[] => [
+export const createColumns = (
+  onRowEdit?: (row: Row<CustomerRequest>) => void
+): ColumnDef<CustomerRequest>[] => [
   {
     id: 'select',
     header: ({ table }) => (

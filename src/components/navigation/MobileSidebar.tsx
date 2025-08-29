@@ -8,7 +8,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeftStartOnRectangleIcon,
   BanknotesIcon,
-  BellAlertIcon,
   ChartBarIcon,
   ClipboardDocumentListIcon,
   Cog6ToothIcon,
