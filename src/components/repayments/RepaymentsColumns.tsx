@@ -33,7 +33,7 @@ const ActionsCell = ({ row, onRowEdit }: ActionsCellProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button 
+        <button
           className="h-8 w-8 flex justify-center items-center rounded-full hover:bg-background outline-none"
           onClick={(e) => e.stopPropagation()}
         >
@@ -53,7 +53,9 @@ const ActionsCell = ({ row, onRowEdit }: ActionsCellProps) => {
   );
 };
 
-export const createColumns = (onRowEdit?: (row: Repayment) => void): ColumnDef<Repayment>[] => [
+export const createColumns = (
+  onRowEdit?: (row: Repayment) => void
+): ColumnDef<Repayment>[] => [
   {
     id: 'select',
     header: ({ table }) => (
@@ -99,12 +101,8 @@ export const createColumns = (onRowEdit?: (row: Repayment) => void): ColumnDef<R
   },
   {
     accessorKey: 'dueDate',
-    header: ({ column }) => (
-      <ColumnHeader column={column} title="Due Date" />
-    ),
-    cell: ({ row }) => (
-      <span>{formatDate(row.original?.dueDate, false)}</span>
-    ),
+    header: ({ column }) => <ColumnHeader column={column} title="Due Date" />,
+    cell: ({ row }) => <span>{formatDate(row.original?.dueDate, false)}</span>,
   },
   {
     accessorKey: 'loan.loanBalance',
@@ -112,7 +110,12 @@ export const createColumns = (onRowEdit?: (row: Repayment) => void): ColumnDef<R
       <ColumnHeader column={column} title="Loan Balance" />
     ),
     cell: ({ row }) => (
-      <span>₦ {formatNumber(row.original?.loan?.loanBalance)}</span>
+      <span>
+        ₦{' '}
+        {row.original?.loan?.loanBalance
+          ? formatNumber(row.original.loan.loanBalance)
+          : '0'}
+      </span>
     ),
   },
   {

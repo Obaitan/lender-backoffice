@@ -9,18 +9,7 @@ import Details from './Details';
 import ActivityHistory from './ActivityHistory';
 import { LoanResponse, SelectOption } from '@/types';
 
-// Define the props interface
-interface ReviewInfo {
-  loan: string;
-  activity: string;
-  customerID: string;
-}
-
-interface ReviewPanelProps {
-  reviewInfo: ReviewInfo;
-}
-
-const ReviewPanel = ({ reviewInfo }: ReviewPanelProps) => {
+const ReviewPanel = () => {
   const [openPanel, setOpenPanel] = useState<boolean>(false);
   const [loans] = useState<SelectOption[]>([]);
   const [loadedLoans] = useState<LoanResponse[]>([]);

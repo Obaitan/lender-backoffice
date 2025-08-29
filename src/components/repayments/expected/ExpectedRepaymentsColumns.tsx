@@ -112,7 +112,7 @@ export const createColumns = (onRowEdit?: (row: Repayment) => void): ColumnDef<R
       <ColumnHeader column={column} title="Loan Balance" />
     ),
     cell: ({ row }) => (
-      <span>₦ {formatNumber(row.original?.loan.loanBalance)}</span>
+      <span>₦ {row.original?.loan.loanBalance ? formatNumber(row.original.loan.loanBalance) : '0'}</span>
     ),
   },
   {

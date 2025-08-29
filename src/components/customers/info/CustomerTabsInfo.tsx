@@ -4,7 +4,6 @@ import Inflight from './Inflight';
 import MonoGsm from './MonoGsm';
 import PaystackDd from './PaystackDd';
 import PaystackCard from './PaystackCard';
-import Wacs from './Wacs';
 import {
   Customer,
   FinancialData,
@@ -14,9 +13,6 @@ import {
   InflightSalaryRecord,
   InflightLoanRecord,
   InflightMandate,
-  WacsMandate,
-  WacsRepayment,
-  WacsData,
 } from '@/types';
 import { CustomerDetailsTemplate } from './CustomerDetailsTemplate';
 
@@ -30,9 +26,6 @@ export const CustomerTabsInfo = ({
   inflightSalaryRecord,
   inflightLoanRecord,
   inflightMandates,
-  wacsData,
-  wacsMandates,
-  wacsRepayments,
 }: {
   phoneNumber: string;
   customerData: Customer | null;
@@ -43,9 +36,6 @@ export const CustomerTabsInfo = ({
   inflightSalaryRecord: InflightSalaryRecord[] | null;
   inflightLoanRecord: InflightLoanRecord[] | null;
   inflightMandates: InflightMandate[] | null;
-  wacsData: WacsData;
-  wacsMandates: WacsMandate[] | null;
-  wacsRepayments: WacsRepayment[] | null;
 }) => {
   const customerTabsArray = [
     {
@@ -71,16 +61,6 @@ export const CustomerTabsInfo = ({
           salaryHistory={inflightSalaryRecord}
           loanHistory={inflightLoanRecord}
           inflightMandates={inflightMandates}
-        />
-      ),
-    },
-    {
-      label: 'WACS',
-      content: (
-        <Wacs
-          mandates={wacsMandates}
-          repayments={wacsRepayments}
-          wacsData={wacsData}
         />
       ),
     },

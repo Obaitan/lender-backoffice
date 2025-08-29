@@ -4,11 +4,7 @@ import CustomerProfilePicture from './CustomerProfilePicture';
 import ReviewPanel from '@/components/customers/review/ReviewPanel';
 import CustomerActionsComponent from '@/components/customers/CustomerActions';
 import CustomerDisburseFunds from './CustomerDisburseFunds';
-import {
-  dummyInflightMandates,
-  dummyWacsMandates,
-  dummyWacsRepayments,
-} from '@/utils/dummyData';
+import { dummyInflightMandates } from '@/utils/dummyData';
 import {
   getDummyCustomerByPhone,
   getDummyFinancialData,
@@ -35,23 +31,17 @@ export default function CustomerDataPage() {
   const inflightLoanRecord = getDummyInflightLoanHistory(customerID);
   const loanApplication = getDummyLoanApplication(customerID);
 
-  const reviewInformation = {
-    loan: 'One',
-    activity: 'Approved',
-    customerID: customerID,
-  };
-
   const approvedLoan = loanHistory?.find((loan) => loan.status === 'APPROVED');
 
   const disbursementData = {
-    approvedAmount: approvedLoan?.amount || loanApplication?.adjusteAmount || loanApplication?.amount || 0,
-    initialInterestRate: approvedLoan?.interestRate || loanApplication?.interestRate || 0,
+    approvedAmount:
+      approvedLoan?.amount ||
+      loanApplication?.adjusteAmount ||
+      loanApplication?.amount ||
+      0,
+    initialInterestRate:
+      approvedLoan?.interestRate || loanApplication?.interestRate || 0,
     initialTenureMonths: approvedLoan?.duration || 0,
-  };
-
-  const wacsInformation = {
-    ippis: '162762',
-    employer: 'Federal Inland Revenue Service.',
   };
 
   return (
@@ -65,17 +55,22 @@ export default function CustomerDataPage() {
               initialInterestRate={disbursementData.initialInterestRate}
               initialTenureMonths={disbursementData.initialTenureMonths}
               workFlowStatus={loanApplication?.workFlowStatus || ''}
-              loanApplication={loanApplication ? {
-                id: loanApplication.id,
-                loanApplicationNumber: loanApplication.loanApplicationNumber,
-                customerID: loanApplication.customerID,
-                customerName: loanApplication.customerName,
-                adjusteAmount: loanApplication.adjusteAmount,
-                amount: loanApplication.amount,
-                interestRate: loanApplication.interestRate
-              } : undefined}
+              loanApplication={
+                loanApplication
+                  ? {
+                      id: loanApplication.id,
+                      loanApplicationNumber:
+                        loanApplication.loanApplicationNumber,
+                      customerID: loanApplication.customerID,
+                      customerName: loanApplication.customerName,
+                      adjusteAmount: loanApplication.adjusteAmount,
+                      amount: loanApplication.amount,
+                      interestRate: loanApplication.interestRate,
+                    }
+                  : undefined
+              }
             />
-            <ReviewPanel reviewInfo={reviewInformation} />
+            <ReviewPanel />
             <CustomerActionsComponent />
           </div>
         </div>
@@ -109,9 +104,6 @@ export default function CustomerDataPage() {
           inflightSalaryRecord={inflightSalaryRecord}
           inflightLoanRecord={inflightLoanRecord}
           inflightMandates={dummyInflightMandates}
-          wacsData={wacsInformation}
-          wacsMandates={dummyWacsMandates}
-          wacsRepayments={dummyWacsRepayments}
         />
       </div>
     </>
