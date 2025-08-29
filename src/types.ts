@@ -570,9 +570,13 @@ export interface Loan {
   createdBy: string;
   lastModifiedBy: string;
   status: string;
+  loanId: number;
+  maturityDate?: string;
+  loanBalance?: number;
   repayments?: LoanRepaymment[];
   [key: string]: unknown;
 }
+
 export interface Loans {
   id: number;
   customerID: string;
@@ -1043,20 +1047,6 @@ export interface CustomerRequest {
   otherIssue: string;
   status: string;
   assignedUserEmail: string;
-}
-
-export interface Loan {
-  loanId: number;
-  loanNumber: string;
-  currency: string;
-  amount: number;
-  interestRate: number;
-  duration: number;
-  maturityDate: string;
-  loanBalance: number;
-  status: string;
-  createDate: string;
-  vendorName: string;
 }
 
 export interface RepaymentCustomer {
