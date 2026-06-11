@@ -1,6 +1,6 @@
 export const systemAdmin = {
   name: 'Adeyemi Olayemi',
-  email: 'adeyemi.olayemi@paylaterhub.co',
+  email: 'adeyemi.olayemi@lender.co',
   role: 'Admin',
   image: '',
 };
@@ -1153,7 +1153,7 @@ export const dummyAuditLogs = [
   {
     id: 1,
     officer: 'John Adebayo',
-    email: 'john.adebayo@paylaterhub.co',
+    email: 'john.adebayo@lender.co',
     ipAddress: '192.168.1.100',
     action: 'User Login',
     comment: 'User successfully logged into the system',
@@ -1162,7 +1162,7 @@ export const dummyAuditLogs = [
   {
     id: 2,
     officer: 'Sarah Okafor',
-    email: 'sarah.okafor@paylaterhub.co',
+    email: 'sarah.okafor@lender.co',
     ipAddress: '192.168.1.101',
     action: 'Loan Application Review',
     comment: 'Reviewed loan application CUST-001 and approved for disbursement',
@@ -1171,7 +1171,7 @@ export const dummyAuditLogs = [
   {
     id: 3,
     officer: 'Michael Eze',
-    email: 'michael.eze@paylaterhub.co',
+    email: 'michael.eze@lender.co',
     ipAddress: '192.168.1.102',
     action: 'Customer Data Update',
     comment: 'Updated customer profile information for CUST-003',
@@ -1180,7 +1180,7 @@ export const dummyAuditLogs = [
   {
     id: 4,
     officer: 'Grace Nwosu',
-    email: 'grace.nwosu@paylaterhub.co',
+    email: 'grace.nwosu@lender.co',
     ipAddress: '192.168.1.103',
     action: 'Loan Disbursement',
     comment: 'Disbursed loan amount of ₦500,000 to customer CUST-002',
@@ -1189,7 +1189,7 @@ export const dummyAuditLogs = [
   {
     id: 5,
     officer: 'David Okoro',
-    email: 'david.okoro@paylaterhub.co',
+    email: 'david.okoro@lender.co',
     ipAddress: '192.168.1.104',
     action: 'System Configuration',
     comment: 'Updated system parameters for interest rates',
@@ -1198,7 +1198,7 @@ export const dummyAuditLogs = [
   {
     id: 6,
     officer: 'Blessing Uche',
-    email: 'blessing.uche@paylaterhub.co',
+    email: 'blessing.uche@lender.co',
     ipAddress: '192.168.1.105',
     action: 'User Management',
     comment: 'Created new user account for team member',
