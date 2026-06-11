@@ -45,7 +45,7 @@ export default function CreateMessageTemplate({
       const newMessage: MessageTemplate = {
         ...data,
         createdByName: 'Current User',
-        createdByEmail: 'current.user@paylaterhub.co',
+        createdByEmail: 'current.user@lender.co',
         createdAt: new Date().toISOString(),
         status: 'Active',
       };

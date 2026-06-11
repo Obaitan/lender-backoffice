@@ -138,8 +138,8 @@ export const MobileSidebar = ({ isOpen, onClose }: MobileSidebarProps) => {
               <div className="px-5 pt-5">
                 <div className="flex justify-between items-center mb-4">
                   <Image
-                    src={'/branding/paylaterhub-logo.svg'}
-                    alt="Paylaterhub logo"
+                    src={'/branding/lender-logo.svg'}
+                    alt="Lender logo"
                     width={150}
                     height={40}
                     className="w-32"

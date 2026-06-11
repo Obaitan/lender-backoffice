@@ -19,7 +19,7 @@ export function getCustomerImageUrl(filePath?: string): string {
   }
   
   // Otherwise, construct the full URL with the API base URL
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://paylaterhub.com/service-sandbox';
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lender.com/service-sandbox';
   return `${baseUrl}/${filePath}`;
 }
 

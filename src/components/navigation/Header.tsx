@@ -22,8 +22,8 @@ const HeaderComponent = ({ openSidebar }: { openSidebar?: () => void }) => {
     <div className="bg-white h-16 shadow xl:shadow-sm fixed top-0 left-0 xl:left-[221px] right-0 z-50 flex items-center px-6 xl:rounded-sm">
       <div className="flex justify-between items-center gap-5 w-full">
         <Image
-          src={'/branding/paylaterhub-logo.svg'}
-          alt="Paylaterhub logo"
+          src={'/branding/lender-logo.svg'}
+          alt="Lender logo"
           width={219}
           height={50}
           className="w-36 xl:hidden"
